@@ -347,15 +347,11 @@
             flex-grow: 1; 
         }
 
-        /* NOVO ESTILO PARA O OVERLINE */
         .overline-md {
             text-decoration: overline;
-            text-decoration-color: #f0f4f8; /* Cor do traço */
-            text-decoration-thickness: 1px; /* Espessura do traço */
-            /* Se quiser que o traço seja mais "colado" às letras, você pode usar: */
-            /* text-underline-offset: -0.1em; (negativo para subir, positivo para descer) */
+            text-decoration-color: #f0f4f8; 
+            text-decoration-thickness: 1px; 
         }
-        /* FIM NOVO ESTILO */
 
         #modalOverlay {
             position: fixed;
@@ -592,7 +588,13 @@
         const copyVigenteListBtn = document.getElementById('copyVigenteListBtn');
         
         const naoVigenteCopyBox = document.getElementById('naoVigenteCopyBox');
-        const naoVigenteListText = document='true'.getElementById('naoVigenteListText');
+        
+        // ==========================================================
+        // CORREÇÃO DO ERRO DE SINTAXE
+        // ==========================================================
+        const naoVigenteListText = document.getElementById('naoVigenteListText');
+        // ==========================================================
+
         const copyNaoVigenteListBtn = document.getElementById('copyNaoVigenteListBtn');
 
         const toastContainer = document.getElementById('toastContainer');
@@ -943,3 +945,46 @@
         
         function copyToClipboard(text, successMessage) {
             if (!navigator.clipboard) {
+                // Fallback
+                try {
+                    const textArea = document.createElement("textarea");
+                    textArea.value = text;
+                    textArea.style.position = "fixed";
+                    textArea.style.top = "0";
+                    textArea.style.left = "0";
+                    document.body.appendChild(textArea);
+                    textArea.focus();
+                    textArea.select();
+                    document.execCommand('copy');
+                    document.body.removeChild(textArea);
+                    showToast(successMessage, 'success');
+                } catch (err) {
+                    console.error('Fallback de cópia falhou: ', err);
+                    showToast("Não foi possível copiar.", "error");
+                }
+                return;
+            }
+
+            navigator.clipboard.writeText(text).then(() => {
+                showToast(successMessage, 'success');
+            }).catch(err => {
+                console.error('Erro ao copiar para a área de transferência: ', err);
+                try {
+                    const textArea = document.createElement("textarea");
+                    textArea.value = text;
+                    textArea.style.position = "fixed";
+                    document.body.appendChild(textArea);
+                    textArea.focus();
+                    textArea.select();
+                    document.execCommand('copy');
+                    document.body.removeChild(textArea);
+                    showToast(successMessage, 'success');
+                } catch (fallbackErr) {
+                     showToast("Falha ao copiar.", "error");
+                }
+            });
+        }
+        
+    </script>
+</body>
+</html>
