@@ -68,7 +68,18 @@
             color: #f0f4f8;
             font-style: italic;
             margin-top: -1.5rem; /* Puxa para mais perto do título */
-            margin-bottom: 2rem;
+            margin-bottom: 0.25rem; /* AJUSTADO */
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.2);
+        }
+
+        /* NOVO ESTILO PARA O CONTADOR */
+        #databaseStatsInfo {
+            text-align: center;
+            color: #f0f4f8;
+            font-style: italic;
+            font-size: 0.9rem;
+            margin-top: 0;
+            margin-bottom: 2rem; /* Espaçamento antes do card */
             text-shadow: 1px 1px 2px rgba(0,0,0,0.2);
         }
 
@@ -126,7 +137,6 @@
             background-color: #5a6268;
         }
 
-        /* NOVOS ESTILOS PARA BOTÕES DE COPIAR */
         button.success {
             background-color: #28a745;
         }
@@ -175,7 +185,6 @@
         #totalVigenteSpan { color: var(--color-success-dark); }
         #totalNaoVigenteSpan { color: var(--color-error-dark); }
 
-        /* Estilo para as Caixas de Cópia */
         .copy-box {
             background: var(--color-bg-light);
             border-radius: 12px;
@@ -201,7 +210,7 @@
         }
 
         .copy-box button {
-            flex-shrink: 0; /* Impede que o botão encolha */
+            flex-shrink: 0; 
         }
 
 
@@ -272,7 +281,6 @@
             line-height: 1.3;
         }
 
-        /* Toast Notifications */
         #toastContainer {
             position: fixed;
             bottom: 20px;
@@ -308,17 +316,16 @@
             display: none;
         }
 
-        /* CSS MODIFICADO para o link de atualização */
         #updateLink {
-            position: fixed; /* Fixa na tela */
-            bottom: 10px;    /* 10px do rodapé */
-            left: 20px;     /* 20px da esquerda */
+            position: fixed; 
+            bottom: 10px;    
+            left: 20px;     
             font-size: 0.8rem;
             color: #f0f4f8;
             opacity: 0.7;
             text-decoration: none;
             padding: 10px;
-            z-index: 50; /* Abaixo dos toasts e modais */
+            z-index: 50; 
         }
         #updateLink:hover {
             opacity: 1;
@@ -365,7 +372,7 @@
         
         .modal .button-group {
              margin-top: 1.5rem;
-             justify-content: flex-end; /* Alinha botões à direita */
+             justify-content: flex-end; 
         }
         
         .error-text {
@@ -414,6 +421,7 @@
         <h1>Verificador de NCM Vigentes</h1>
         
         <p id="dataSourceInfo">Carregando base de dados...</p>
+        <p id="databaseStatsInfo"></p>
 
         <div class="card">
             <h2>1. Cole suas NCMs</h2>
@@ -457,8 +465,7 @@
         </div>
 
 
-<div class="results-container">
-
+        <div class="results-container">
             <div class="card result-card vigente hidden" id="vigenteCard">
                 <h3><span>Vigentes (<span id="vigenteCount">0</span>)</span></h3>
                 <div id="vigenteList" class="result-list">
@@ -470,7 +477,6 @@
                 <div id="naoVigenteList" class="result-list">
                     </div>
             </div>
-
         </div>
 
     </div> <div id="toastContainer"></div>
@@ -498,14 +504,14 @@
         <a href="https://www.gov.br/receitafederal/pt-br/assuntos/aduana-e-comercio-exterior/classificacao-fiscal-de-mercadorias/download-ncm-nomenclatura-comum-do-mercosul" target="_blank" rel="noopener noreferrer">
             Página de Download de NCMs (Receita Federal)
         </a>
-        <p>Procure pelo link de download do arquivo **JSON**. O arquivo baixado terá um nome com a data, como `Tabela_NCM_Vigente_YYYYMMDD.json`.</p>
+        <p>Procure pelo link de download do arquivo **JSON**. O arquivo baixado terá um nome com a data, como `NCM_YYYYMMDD.json`.</p>
 
         <h3>Passo 2: Fazer Upload no GitHub</h3>
         <p>Você deve enviar este arquivo para o repositório no GitHub, substituindo o antigo.</p>
         <ol>
             <li>Abra seu repositório no GitHub.</li>
             <li>Clique em <strong>"Add file"</strong> (Adicionar arquivo) e depois em <strong>"Upload files"</strong> (Enviar arquivos).</li>
-            <li>Arraste o arquivo JSON que você acabou de baixar (ex: `Tabela_NCM_Vigente_20251028.json`) para a janela do GitHub.</li>
+            <li>Arraste o arquivo JSON que você acabou de baixar (ex: `NCM_YYYYMMDD.json`) para a janela do GitHub.</li>
             <li><strong>IMPORTANTE:</strong> O GitHub mostrará o nome do arquivo. Clique no ícone de lápis (editar) ao lado do nome e **renomeie o arquivo** para exatamente:
                 <br>
                 <strong class="code-highlight" id="targetFileName">base-ncm.json</strong>
@@ -524,15 +530,10 @@
         // Objeto global para armazenar os dados da NCM
         let ncmDatabase = {};
         
-        // Armazena os últimos resultados para as caixas de cópia
         let lastVigentes = [];
-        let lastNaoVigentes = []; // NOVA variável
+        let lastNaoVigentes = []; 
 
-        // -------------------------------------------------------------------
-        //  PONTO DE ATUALIZAÇÃO MANUAL
-        // -------------------------------------------------------------------
         const JSON_FILE = 'base-ncm.json';
-        // -------------------------------------------------------------------
 
         // --- Seleção de Elementos DOM ---
         const ncmInput = document.getElementById('ncmInput');
@@ -544,6 +545,9 @@
         const totalVigenteSpan = document.getElementById('totalVigenteSpan');
         const totalNaoVigenteSpan = document.getElementById('totalNaoVigenteSpan');
         const dataSourceInfo = document.getElementById('dataSourceInfo');
+        
+        // NOVO seletor
+        const databaseStatsInfo = document.getElementById('databaseStatsInfo');
 
         const naoVigenteCard = document.getElementById('naoVigenteCard');
         const naoVigenteCount = document.getElementById('naoVigenteCount');
@@ -557,7 +561,6 @@
         const vigenteListText = document.getElementById('vigenteListText');
         const copyVigenteListBtn = document.getElementById('copyVigenteListBtn');
         
-        // NOVOS Elementos "Não Vigentes"
         const naoVigenteCopyBox = document.getElementById('naoVigenteCopyBox');
         const naoVigenteListText = document.getElementById('naoVigenteListText');
         const copyNaoVigenteListBtn = document.getElementById('copyNaoVigenteListBtn');
@@ -627,7 +630,7 @@
         clearBtn.addEventListener('click', clearResults);
         
         copyVigenteListBtn.addEventListener('click', copyVigentesList);
-        copyNaoVigenteListBtn.addEventListener('click', copyNaoVigentesList); // NOVO Listener
+        copyNaoVigenteListBtn.addEventListener('click', copyNaoVigentesList); 
 
 
         /**
@@ -693,11 +696,29 @@
                         throw new Error("Base de dados carregada, mas nenhuma NCM válida foi processada.");
                     }
 
+                    // ==========================================================
+                    // NOVO CÓDIGO JS PARA EXIBIR O TOTAL DE NCMs
+                    // ==========================================================
+                    const totalNcmsInDb = Object.keys(ncmDatabase).length;
+                    if (databaseStatsInfo) {
+                        // Formata o número (ex: 11.542)
+                        databaseStatsInfo.textContent = `Total de ${totalNcmsInDb.toLocaleString('pt-BR')} NCMs vigentes na base.`;
+                    }
+                    // ==========================================================
+                    // FIM DO NOVO CÓDIGO
+                    // ==========================================================
+
                     showToast('Base de dados NCM carregada e processada com sucesso!', 'success');
                 })
                 .catch(error => {
                     console.error('Erro ao carregar ou processar o arquivo JSON:', error);
                     dataSourceInfo.textContent = `Erro ao carregar ${JSON_FILE}. Verifique o console (F12).`;
+                    
+                    // Esconde a linha de estatísticas se o carregamento falhar
+                    if(databaseStatsInfo) {
+                        databaseStatsInfo.classList.add('hidden');
+                    }
+                    
                     showToast(`ERRO: ${error.message}. Verifique o console (F12).`, 'error');
                 });
         }
@@ -744,9 +765,8 @@
                 }
             });
             
-            // Salva resultados para as caixas de cópia
             lastVigentes = vigentes;
-            lastNaoVigentes = naoVigentes; // NOVO
+            lastNaoVigentes = naoVigentes; 
 
             displayResults(vigentes, naoVigentes, uniqueNcms.length);
         }
@@ -780,7 +800,6 @@
                 vigenteList.innerHTML = vigenteHtml;
                 vigenteCard.classList.remove('hidden');
 
-                // Popula a caixa de cópia "Vigentes"
                 const sortedVigentes = [...vigentes].sort((a, b) => a.code.localeCompare(b.code));
                 const vigenteString = sortedVigentes.map(item => formatNCM(item.code)).join(', ');
                 vigenteListText.value = vigenteString;
@@ -788,7 +807,7 @@
 
             } else {
                 vigenteCard.classList.add('hidden');
-                vigenteCopyBox.classList.add('hidden'); // Esconde a caixa de cópia
+                vigenteCopyBox.classList.add('hidden'); 
             }
 
             // Popula lista de Não Vigentes
@@ -804,7 +823,6 @@
                 naoVigenteList.innerHTML = naoVigenteHtml;
                 naoVigenteCard.classList.remove('hidden');
 
-                // Popula a NOVA caixa de cópia "Não Vigentes"
                 const sortedNaoVigentes = [...naoVigentes].sort((a, b) => a.code.localeCompare(b.code));
                 const naoVigenteString = sortedNaoVigentes.map(item => formatNCM(item.code)).join(', ');
                 naoVigenteListText.value = naoVigenteString;
@@ -812,7 +830,7 @@
 
             } else {
                 naoVigenteCard.classList.add('hidden');
-                naoVigenteCopyBox.classList.add('hidden'); // Esconde a caixa de cópia
+                naoVigenteCopyBox.classList.add('hidden'); 
             }
             
             statsCard.classList.remove('hidden');
@@ -827,7 +845,7 @@
             naoVigenteList.innerHTML = '';
             
             vigenteListText.value = '';
-            naoVigenteListText.value = ''; // NOVO
+            naoVigenteListText.value = ''; 
 
             totalProcessedSpan.textContent = '0';
             totalVigenteSpan.textContent = '0';
@@ -838,17 +856,14 @@
             naoVigenteCard.classList.add('hidden');
             
             vigenteCopyBox.classList.add('hidden');
-            naoVigenteCopyBox.classList.add('hidden'); // NOVO
+            naoVigenteCopyBox.classList.add('hidden'); 
             
             lastVigentes = [];
-            lastNaoVigentes = []; // NOVO
+            lastNaoVigentes = []; 
             
             showToast("Campos limpos!", "info");
         }
         
-        /**
-         * Copia a lista de NCMs vigentes.
-         */
         function copyVigentesList() {
             const textToCopy = vigenteListText.value;
             if (textToCopy) {
@@ -858,9 +873,6 @@
             }
         }
 
-        /**
-         * NOVA função para copiar a lista de NCMs não vigentes.
-         */
         function copyNaoVigentesList() {
             const textToCopy = naoVigenteListText.value;
             if (textToCopy) {
@@ -872,17 +884,11 @@
 
         // --- Funções Utilitárias ---
 
-        /**
-         * Formata uma NCM de '12345678' para '1234.56.78'.
-         */
         function formatNCM(ncm) {
             if (ncm.length !== 8) return ncm;
             return `${ncm.substring(0, 4)}.${ncm.substring(4, 6)}.${ncm.substring(6, 8)}`;
         }
 
-        /**
-         * Exibe uma notificação toast.
-         */
         function showToast(message, type = 'info') {
             const toast = document.createElement('div');
             toast.className = `toast ${type}`;
@@ -903,9 +909,6 @@
             }, duration);
         }
         
-        /**
-         * Copia um texto para a área de transferência.
-         */
         function copyToClipboard(text, successMessage) {
             if (!navigator.clipboard) {
                 // Fallback
@@ -932,7 +935,6 @@
                 showToast(successMessage, 'success');
             }).catch(err => {
                 console.error('Erro ao copiar para a área de transferência: ', err);
-                // Tenta o fallback se a API do Clipboard falhar
                 try {
                     const textArea = document.createElement("textarea");
                     textArea.value = text;
@@ -951,6 +953,4 @@
         
     </script>
 </body>
-
 </html>
-
