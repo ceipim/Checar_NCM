@@ -315,46 +315,47 @@
             display: none;
         }
 
-        /* ========================================================== */
-        /* CSS DO RODAPÉ MODIFICADO */
-        /* ========================================================== */
-        
-        /* NOVO: Container do rodapé */
         .page-footer {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            flex-wrap: wrap; /* Para telas pequenas */
+            flex-wrap: wrap; 
             padding: 1rem;
-            max-width: 1200px; /* Alinha com o .container */
-            margin: 0 auto; /* Centraliza */
-            gap: 1rem; /* Espaçamento entre os links */
+            max-width: 1200px; 
+            margin: 0 auto; 
+            gap: 1rem; 
         }
         
-        /* MODIFICADO: Estilo do link de admin (removido position: fixed) */
         #updateLink {
             font-size: 0.8rem;
             color: #f0f4f8;
             opacity: 0.7;
             text-decoration: none;
             padding: 10px;
-            /* Removemos o 'text-align: center' implícito */
         }
         #updateLink:hover {
             opacity: 1;
         }
         
-        /* NOVO: Estilo do copyright */
         #copyrightInfo {
             font-size: 0.8rem;
             color: #f0f4f8;
             opacity: 0.7;
             padding: 10px;
-            margin: 0; /* Remove margem padrão do <p> */
+            margin: 0; 
             text-align: right;
-            flex-grow: 1; /* Faz ele ocupar o espaço restante */
+            flex-grow: 1; 
         }
-        /* ========================================================== */
+
+        /* NOVO ESTILO PARA O OVERLINE */
+        .overline-md {
+            text-decoration: overline;
+            text-decoration-color: #f0f4f8; /* Cor do traço */
+            text-decoration-thickness: 1px; /* Espessura do traço */
+            /* Se quiser que o traço seja mais "colado" às letras, você pode usar: */
+            /* text-underline-offset: -0.1em; (negativo para subir, positivo para descer) */
+        }
+        /* FIM NOVO ESTILO */
 
         #modalOverlay {
             position: fixed;
@@ -504,10 +505,13 @@
             </div>
         </div>
 
-    </div> <div class="page-footer">
+    </div> 
+    
+    <div class="page-footer">
         <a href="#" id="updateLink" title="Acesso do Administrador">Atualizar Base de Dados</a>
-        <p id="copyrightInfo">&copy; 2025. T. Design by M&#x304;D&#x304;.</p>
+        <p id="copyrightInfo">&copy; 2025. Design by <span class="overline-md">MD</span>.</p>
     </div>
+
     <div id="toastContainer"></div>
 
     <div id="modalOverlay" class="hidden"></div>
@@ -588,7 +592,7 @@
         const copyVigenteListBtn = document.getElementById('copyVigenteListBtn');
         
         const naoVigenteCopyBox = document.getElementById('naoVigenteCopyBox');
-        const naoVigenteListText = document.getElementById('naoVigenteListText');
+        const naoVigenteListText = document='true'.getElementById('naoVigenteListText');
         const copyNaoVigenteListBtn = document.getElementById('copyNaoVigenteListBtn');
 
         const toastContainer = document.getElementById('toastContainer');
@@ -939,46 +943,3 @@
         
         function copyToClipboard(text, successMessage) {
             if (!navigator.clipboard) {
-                // Fallback
-                try {
-                    const textArea = document.createElement("textarea");
-                    textArea.value = text;
-                    textArea.style.position = "fixed";
-                    textArea.style.top = "0";
-                    textArea.style.left = "0";
-                    document.body.appendChild(textArea);
-                    textArea.focus();
-                    textArea.select();
-                    document.execCommand('copy');
-                    document.body.removeChild(textArea);
-                    showToast(successMessage, 'success');
-                } catch (err) {
-                    console.error('Fallback de cópia falhou: ', err);
-                    showToast("Não foi possível copiar.", "error");
-                }
-                return;
-            }
-
-            navigator.clipboard.writeText(text).then(() => {
-                showToast(successMessage, 'success');
-            }).catch(err => {
-                console.error('Erro ao copiar para a área de transferência: ', err);
-                try {
-                    const textArea = document.createElement("textarea");
-                    textArea.value = text;
-                    textArea.style.position = "fixed";
-                    document.body.appendChild(textArea);
-                    textArea.focus();
-                    textArea.select();
-                    document.execCommand('copy');
-                    document.body.removeChild(textArea);
-                    showToast(successMessage, 'success');
-                } catch (fallbackErr) {
-                     showToast("Falha ao copiar.", "error");
-                }
-            });
-        }
-        
-    </script>
-</body>
-</html>
