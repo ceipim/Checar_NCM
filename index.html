@@ -41,7 +41,7 @@
             color: var(--color-text);
             line-height: 1.6;
             padding: 1rem;
-            padding-bottom: 4rem; /* Garante espaço para o link fixo no rodapé */
+            padding-bottom: 4rem; 
         }
 
         .container {
@@ -78,7 +78,7 @@
             font-style: italic;
             font-size: 0.9rem;
             margin-top: 0;
-            margin-bottom: 2rem; /* Espaçamento antes do card */
+            margin-bottom: 2rem; 
             text-shadow: 1px 1px 2px rgba(0,0,0,0.2);
         }
 
@@ -635,7 +635,21 @@
          * Carrega e PROCESSA o arquivo JSON da base de dados NCM.
          */
         function loadData() {
-            fetch(JSON_FILE)
+            // ==========================================================
+            // NOVO CÓDIGO: Cache Buster
+            // ==========================================================
+            // Pega a data e hora atual (ex: 2025102809)
+            const now = new Date();
+            const cacheBuster = `${now.getFullYear()}${now.getMonth()}${now.getDate()}${now.getHours()}`;
+            
+            // Adiciona o "cacheBuster" ao final do nome do arquivo
+            // Ex: "base-ncm.json?v=2025102809"
+            // Isso "engana" o navegador, forçando-o a baixar o arquivo novo a cada hora.
+            const fileToFetch = `${JSON_FILE}?v=${cacheBuster}`;
+            // ==========================================================
+
+
+            fetch(fileToFetch) // << MODIFICADO AQUI
                 .then(response => {
                     if (!response.ok) {
                         throw new Error(`Erro HTTP! Status: ${response.status}. Não foi possível encontrar o arquivo ${JSON_FILE}.`);
@@ -644,40 +658,27 @@
                 })
                 .then(data => {
                     
-                    // ==========================================================
-                    // NOVO CÓDIGO JS PARA FORMATAR O NOME DO ARQUIVO
-                    // ==========================================================
                     let updateDate = data.Data_Ultima_Atualizacao_NCM;
-                    let dateInfo = `Base de Dados: ${JSON_FILE}`; // Fallback: "Base de Dados: base-ncm.json"
+                    let dateInfo = `Base de Dados: ${JSON_FILE}`; // Fallback
 
                     if (updateDate) {
-                        // Tenta extrair a data (ex: "23/10/2025") da string (ex: "Vigente em 23/10/2025")
                         const dateMatch = updateDate.match(/(\d{2})\/(\d{2})\/(\d{4})/);
                         
                         if (dateMatch) {
-                            // dateMatch = ["23/10/2025", "23", "10", "2025"]
                             const day = dateMatch[1];
                             const month = dateMatch[2];
                             const year = dateMatch[3];
                             
-                            // Formata como YYYYMMDD
                             const yyyymmdd = year + month + day;
                             
-                            // Monta a string final como você pediu
                             const finalFileName = `Tabela_NCM_Vigente_${yyyymmdd}.json`;
                             dateInfo = `Base de Dados: ${finalFileName}`;
                         } else {
-                            // Se não encontrar o formato DD/MM/YYYY, usa o texto original
                             dateInfo = `Base de Dados: ${JSON_FILE} (Atualizada em: ${updateDate})`;
                         }
                     } 
-                    // (Se updateDate for nulo, o fallback "Base de Dados: base-ncm.json" será usado)
                     
                     dataSourceInfo.textContent = dateInfo;
-                    // ==========================================================
-                    // FIM DO NOVO CÓDIGO
-                    // ==========================================================
-
 
                     let ncmArray = null;
                     if (Array.isArray(data)) {
