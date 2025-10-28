@@ -41,6 +41,7 @@
             color: var(--color-text);
             line-height: 1.6;
             padding: 1rem;
+            padding-bottom: 4rem; /* Garante espaço para o link fixo no rodapé */
         }
 
         .container {
@@ -62,7 +63,6 @@
             margin-bottom: 2rem;
         }
 
-        /* 2. Estilo para a data movida para baixo do título */
         #dataSourceInfo {
             text-align: center;
             color: #f0f4f8;
@@ -126,6 +126,21 @@
             background-color: #5a6268;
         }
 
+        /* NOVOS ESTILOS PARA BOTÕES DE COPIAR */
+        button.success {
+            background-color: #28a745;
+        }
+        button.success:hover {
+            background-color: #218838;
+        }
+        button.danger {
+            background-color: #dc3545;
+        }
+        button.danger:hover {
+            background-color: #c82333;
+        }
+
+
         #statsCard {
             text-align: center;
         }
@@ -160,8 +175,8 @@
         #totalVigenteSpan { color: var(--color-success-dark); }
         #totalNaoVigenteSpan { color: var(--color-error-dark); }
 
-        /* 8. Nova caixa de cópia para NCMs Vigentes */
-        #vigenteCopyBox {
+        /* Estilo para as Caixas de Cópia */
+        .copy-box {
             background: var(--color-bg-light);
             border-radius: 12px;
             box-shadow: 0 6px 12px var(--color-shadow);
@@ -173,7 +188,7 @@
             align-items: center;
         }
 
-        #vigenteListText {
+        .copy-box textarea {
             width: 100%;
             flex-grow: 1;
             height: 100px;
@@ -185,7 +200,7 @@
             resize: vertical;
         }
 
-        #copyVigenteListBtn {
+        .copy-box button {
             flex-shrink: 0; /* Impede que o botão encolha */
         }
 
@@ -212,7 +227,6 @@
         }
         
         .result-card h3 {
-            /* 7. Título alinhado à esquerda (justify-content: space-between) */
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -230,12 +244,11 @@
             padding-right: 0.5rem;
         }
 
-        /* 9. Altura das linhas/itens reduzida */
         .result-item {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 0.5rem 0.5rem; /* Padding vertical reduzido */
+            padding: 0.5rem 0.5rem;
             border-bottom: 1px solid var(--color-border);
         }
         .result-item:last-child {
@@ -248,12 +261,10 @@
             word-break: break-word;
         }
 
-        /* 9. Tamanho da fonte do item reduzido */
         .result-item span strong {
             font-size: 0.9rem;
         }
         
-        /* 9. Tamanho da descrição e margem reduzidos */
         .result-item .ncm-desc {
             font-size: 0.8rem;
             color: var(--color-text-light);
@@ -297,18 +308,17 @@
             display: none;
         }
 
-        /* =================================================================== */
-        /* NOVO CSS: ESTILOS DO LINK DISCRETO E MODAIS DE ATUALIZAÇÃO        */
-        /* =================================================================== */
+        /* CSS MODIFICADO para o link de atualização */
         #updateLink {
-            display: block;
-            text-align: center;
+            position: fixed; /* Fixa na tela */
+            bottom: 10px;    /* 10px do rodapé */
+            left: 20px;     /* 20px da esquerda */
             font-size: 0.8rem;
             color: #f0f4f8;
             opacity: 0.7;
             text-decoration: none;
-            margin-top: 2rem;
             padding: 10px;
+            z-index: 50; /* Abaixo dos toasts e modais */
         }
         #updateLink:hover {
             opacity: 1;
@@ -366,7 +376,6 @@
             margin-bottom: 0;
         }
         
-        /* Estilos para o modal de instruções */
         #instructionsModal h3 {
             margin-top: 1.5rem;
             border-bottom: 1px solid var(--color-border);
@@ -397,9 +406,6 @@
             font-weight: bold;
             font-size: 1.1rem;
         }
-        /* =================================================================== */
-        /* FIM DO NOVO CSS                                                   */
-        /* =================================================================== */
     </style>
 </head>
 <body>
@@ -440,14 +446,18 @@
             </div>
            </div>
 
-        <div class="hidden" id="vigenteCopyBox">
+        <div class="copy-box hidden" id="vigenteCopyBox">
             <textarea id="vigenteListText" readonly title="Lista de NCMs vigentes encontradas, em ordem crescente."></textarea>
             <button id="copyVigenteListBtn" class="success">Copiar Vigentes</button>
         </div>
 
+        <div class="copy-box hidden" id="naoVigenteCopyBox">
+            <textarea id="naoVigenteListText" readonly title="Lista de NCMs não vigentes encontradas, em ordem crescente."></textarea>
+            <button id="copyNaoVigenteListBtn" class="danger">Copiar Não Vigentes</button>
+        </div>
+
 
         <div class="results-container">
-
             <div class="card result-card vigente hidden" id="vigenteCard">
                 <h3>Vigentes (<span id="vigenteCount">0</span>)</h3>
                 <div id="vigenteList" class="result-list">
@@ -459,11 +469,9 @@
                 <div id="naoVigenteList" class="result-list">
                     </div>
             </div>
-
         </div>
 
     </div> <div id="toastContainer"></div>
-
 
     <a href="#" id="updateLink" title="Acesso do Administrador">Atualizar Base de Dados</a>
 
@@ -508,16 +516,18 @@
             <button id="closeInstructionsBtn">Fechar</button>
         </div>
     </div>
+
+
     <script>
         // Objeto global para armazenar os dados da NCM
         let ncmDatabase = {};
         
-        // Armazena os últimos resultados para a nova caixa de cópia
+        // Armazena os últimos resultados para as caixas de cópia
         let lastVigentes = [];
+        let lastNaoVigentes = []; // NOVA variável
 
         // -------------------------------------------------------------------
         //  PONTO DE ATUALIZAÇÃO MANUAL
-        //  (Alterado conforme Sugestão 1: nome de arquivo fixo)
         // -------------------------------------------------------------------
         const JSON_FILE = 'base-ncm.json';
         // -------------------------------------------------------------------
@@ -528,14 +538,11 @@
         const clearBtn = document.getElementById('clearBtn');
         const statsCard = document.getElementById('statsCard');
         
-        // 3. Botão CSV removido
-        
         const totalProcessedSpan = document.getElementById('totalProcessedSpan');
         const totalVigenteSpan = document.getElementById('totalVigenteSpan');
         const totalNaoVigenteSpan = document.getElementById('totalNaoVigenteSpan');
-        const dataSourceInfo = document.getElementById('dataSourceInfo'); // Posição alterada
+        const dataSourceInfo = document.getElementById('dataSourceInfo');
 
-        // 10. Itens de "Não Vigentes" removidos
         const naoVigenteCard = document.getElementById('naoVigenteCard');
         const naoVigenteCount = document.getElementById('naoVigenteCount');
         const naoVigenteList = document.getElementById('naoVigenteList');
@@ -544,39 +551,35 @@
         const vigenteCount = document.getElementById('vigenteCount');
         const vigenteList = document.getElementById('vigenteList');
         
-        // 8. Novos elementos para a caixa de cópia "Vigentes"
         const vigenteCopyBox = document.getElementById('vigenteCopyBox');
         const vigenteListText = document.getElementById('vigenteListText');
         const copyVigenteListBtn = document.getElementById('copyVigenteListBtn');
         
+        // NOVOS Elementos "Não Vigentes"
+        const naoVigenteCopyBox = document.getElementById('naoVigenteCopyBox');
+        const naoVigenteListText = document.getElementById('naoVigenteListText');
+        const copyNaoVigenteListBtn = document.getElementById('copyNaoVigenteListBtn');
+
         const toastContainer = document.getElementById('toastContainer');
 
-        // ===================================================================
-        // NOVO CÓDIGO: LÓGICA DE ATUALIZAÇÃO DA BASE
-        // ===================================================================
+        // --- Lógica de Atualização (Modais) ---
         const updateLink = document.getElementById('updateLink');
         const modalOverlay = document.getElementById('modalOverlay');
-
-        // Modal de Senha
         const passwordModal = document.getElementById('passwordModal');
         const passwordInput = document.getElementById('passwordInput');
         const confirmPasswordBtn = document.getElementById('confirmPasswordBtn');
         const cancelPasswordBtn = document.getElementById('cancelPasswordBtn');
         const passwordError = document.getElementById('passwordError');
-
-        // Modal de Instruções
         const instructionsModal = document.getElementById('instructionsModal');
         const closeInstructionsBtn = document.getElementById('closeInstructionsBtn');
         const targetFileName = document.getElementById('targetFileName');
         
-        // Define o nome-alvo do arquivo nas instruções
         if (targetFileName) {
             targetFileName.textContent = JSON_FILE;
         }
 
-        // Abrir modal de senha
         updateLink.addEventListener('click', (e) => {
-            e.preventDefault(); // Impede o link de navegar
+            e.preventDefault(); 
             passwordInput.value = '';
             passwordError.textContent = '';
             modalOverlay.classList.remove('hidden');
@@ -584,7 +587,6 @@
             passwordInput.focus();
         });
 
-        // Fechar modais (clicando no overlay ou no "Cancelar")
         function closeModal() {
             modalOverlay.classList.add('hidden');
             passwordModal.classList.add('hidden');
@@ -594,35 +596,27 @@
         modalOverlay.addEventListener('click', closeModal);
         cancelPasswordBtn.addEventListener('click', closeModal);
 
-        // Verificar senha
         confirmPasswordBtn.addEventListener('click', () => {
             const pass = passwordInput.value;
             if (pass === 'atualizarbasededados') {
-                // Senha correta: esconde modal de senha, mostra instruções
                 passwordModal.classList.add('hidden');
                 instructionsModal.classList.remove('hidden');
             } else {
-                // Senha incorreta
                 passwordError.textContent = 'Senha incorreta!';
-                // Limpa o erro após 2 segundos
                 setTimeout(() => {
                     passwordError.textContent = '';
                 }, 2000);
             }
         });
         
-        // Permitir "Enter" no campo de senha
         passwordInput.addEventListener('keyup', (e) => {
              if (e.key === 'Enter') {
                 confirmPasswordBtn.click();
              }
         });
 
-        // Fechar modal de instruções
         closeInstructionsBtn.addEventListener('click', closeModal);
-        // ===================================================================
-        // FIM DO NOVO CÓDIGO
-        // ===================================================================
+        // --- Fim da Lógica de Atualização ---
 
 
         // --- Event Listeners Principais ---
@@ -630,17 +624,12 @@
         verifyBtn.addEventListener('click', verifyNCMs);
         clearBtn.addEventListener('click', clearResults);
         
-        // 3. Listener do CSV removido
-        
-        // 10. Listener de "Copiar Não Vigentes" removido
-        
-        // 8. Novo listener para "Copiar Vigentes"
         copyVigenteListBtn.addEventListener('click', copyVigentesList);
+        copyNaoVigenteListBtn.addEventListener('click', copyNaoVigentesList); // NOVO Listener
 
 
         /**
          * Carrega e PROCESSA o arquivo JSON da base de dados NCM.
-         * (Lógica de processamento mantida)
          */
         function loadData() {
             fetch(JSON_FILE)
@@ -652,15 +641,12 @@
                 })
                 .then(data => {
                     
-                    // 1. Processar a data de atualização
                     let updateDate = data.Data_Ultima_Atualizacao_NCM;
-                    let dateInfo = `Base de Dados: ${JSON_FILE}`; // Default
+                    let dateInfo = `Base de Dados: ${JSON_FILE}`; 
 
                     if (updateDate) {
-                        // 2. Exibe a data na nova posição
                         dateInfo = `Base de Dados: ${JSON_FILE} (Atualizada em: ${updateDate})`;
                     } else {
-                        // Fallback caso o JSON não tenha a data, mas o nome do arquivo tenha
                         const dateMatch = JSON_FILE.match(/(\d{8})/);
                         if (dateMatch) {
                             const dateStr = dateMatch[1];
@@ -670,8 +656,6 @@
                     }
                     dataSourceInfo.textContent = dateInfo;
 
-
-                    // 2. Encontrar o array (lista) de NCMs
                     let ncmArray = null;
                     if (Array.isArray(data)) {
                         ncmArray = data;
@@ -688,7 +672,6 @@
                         throw new Error("Não foi possível encontrar uma lista (array) de NCMs dentro do arquivo JSON.");
                     }
 
-                    // 3. Transformar o array na estrutura de lookup
                     const newDatabase = {};
                     ncmArray.forEach(item => {
                         const code = item.Codigo; 
@@ -759,8 +742,9 @@
                 }
             });
             
-            // Salva apenas vigentes para a caixa de cópia
+            // Salva resultados para as caixas de cópia
             lastVigentes = vigentes;
+            lastNaoVigentes = naoVigentes; // NOVO
 
             displayResults(vigentes, naoVigentes, uniqueNcms.length);
         }
@@ -782,7 +766,6 @@
             if (vigentes.length > 0) {
                 let vigenteHtml = '';
                 vigentes.forEach(item => {
-                    // 4. Botão de cópia individual removido
                     vigenteHtml += `
                         <div class="result-item">
                             <div>
@@ -795,8 +778,7 @@
                 vigenteList.innerHTML = vigenteHtml;
                 vigenteCard.classList.remove('hidden');
 
-                // 8. Popula a nova caixa de cópia "Vigentes"
-                // Ordena em ordem crescente
+                // Popula a caixa de cópia "Vigentes"
                 const sortedVigentes = [...vigentes].sort((a, b) => a.code.localeCompare(b.code));
                 const vigenteString = sortedVigentes.map(item => formatNCM(item.code)).join(', ');
                 vigenteListText.value = vigenteString;
@@ -811,7 +793,6 @@
             if (naoVigentes.length > 0) {
                 let naoVigenteHtml = '';
                 naoVigentes.forEach(item => {
-                    // 4. Botão de cópia individual removido
                     naoVigenteHtml += `
                         <div class="result-item">
                             <span><strong>${formatNCM(item.code)}</strong></span>
@@ -819,21 +800,21 @@
                     `;
                 });
                 naoVigenteList.innerHTML = naoVigenteHtml;
-                
-                // 10. Código da caixa de texto "Não Vigentes" removido
-                
                 naoVigenteCard.classList.remove('hidden');
+
+                // Popula a NOVA caixa de cópia "Não Vigentes"
+                const sortedNaoVigentes = [...naoVigentes].sort((a, b) => a.code.localeCompare(b.code));
+                const naoVigenteString = sortedNaoVigentes.map(item => formatNCM(item.code)).join(', ');
+                naoVigenteListText.value = naoVigenteString;
+                naoVigenteCopyBox.classList.remove('hidden');
+
             } else {
                 naoVigenteCard.classList.add('hidden');
+                naoVigenteCopyBox.classList.add('hidden'); // Esconde a caixa de cópia
             }
-
-            // 4. Chamada para 'addCopyButtonListeners' removida
             
             statsCard.classList.remove('hidden');
-            // 3. Linha do botão CSV removida
         }
-
-        // 4. Função 'addCopyButtonListeners' removida
 
         /**
          * Limpa todas as entradas e resultados.
@@ -843,10 +824,8 @@
             vigenteList.innerHTML = '';
             naoVigenteList.innerHTML = '';
             
-            // 10. Limpeza da caixa "Não Vigentes" removida
-            
-            // 8. Limpa a nova caixa "Vigentes"
             vigenteListText.value = '';
+            naoVigenteListText.value = ''; // NOVO
 
             totalProcessedSpan.textContent = '0';
             totalVigenteSpan.textContent = '0';
@@ -856,19 +835,17 @@
             vigenteCard.classList.add('hidden');
             naoVigenteCard.classList.add('hidden');
             
-            // 8. Esconde a caixa de cópia "Vigentes"
             vigenteCopyBox.classList.add('hidden');
-            
-            // 3. Limpeza do botão CSV removida
+            naoVigenteCopyBox.classList.add('hidden'); // NOVO
             
             lastVigentes = [];
-            // Variável 'lastNaoVigentes' removida
+            lastNaoVigentes = []; // NOVO
             
             showToast("Campos limpos!", "info");
         }
         
         /**
-         * 8. Nova função para copiar a lista de NCMs vigentes.
+         * Copia a lista de NCMs vigentes.
          */
         function copyVigentesList() {
             const textToCopy = vigenteListText.value;
@@ -879,9 +856,17 @@
             }
         }
 
-        // 10. Função 'copyNaoVigentesList' removida
-        
-        // 3. Função 'downloadCSV' removida
+        /**
+         * NOVA função para copiar a lista de NCMs não vigentes.
+         */
+        function copyNaoVigentesList() {
+            const textToCopy = naoVigenteListText.value;
+            if (textToCopy) {
+                copyToClipboard(textToCopy, "Lista de NCMs não vigentes copiada!");
+            } else {
+                showToast("Não há NCMs não vigentes para copiar.", "warn");
+            }
+        }
 
         // --- Funções Utilitárias ---
 
