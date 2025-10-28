@@ -315,20 +315,46 @@
             display: none;
         }
 
+        /* ========================================================== */
+        /* CSS DO RODAPÉ MODIFICADO */
+        /* ========================================================== */
+        
+        /* NOVO: Container do rodapé */
+        .page-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap; /* Para telas pequenas */
+            padding: 1rem;
+            max-width: 1200px; /* Alinha com o .container */
+            margin: 0 auto; /* Centraliza */
+            gap: 1rem; /* Espaçamento entre os links */
+        }
+        
+        /* MODIFICADO: Estilo do link de admin (removido position: fixed) */
         #updateLink {
-            position: fixed; 
-            bottom: 10px;    
-            left: 20px;     
             font-size: 0.8rem;
             color: #f0f4f8;
             opacity: 0.7;
             text-decoration: none;
             padding: 10px;
-            z-index: 50; 
+            /* Removemos o 'text-align: center' implícito */
         }
         #updateLink:hover {
             opacity: 1;
         }
+        
+        /* NOVO: Estilo do copyright */
+        #copyrightInfo {
+            font-size: 0.8rem;
+            color: #f0f4f8;
+            opacity: 0.7;
+            padding: 10px;
+            margin: 0; /* Remove margem padrão do <p> */
+            text-align: right;
+            flex-grow: 1; /* Faz ele ocupar o espaço restante */
+        }
+        /* ========================================================== */
 
         #modalOverlay {
             position: fixed;
@@ -478,9 +504,11 @@
             </div>
         </div>
 
-    </div> <div id="toastContainer"></div>
-
-    <a href="#" id="updateLink" title="Acesso do Administrador">Atualizar Base de Dados</a>
+    </div> <div class="page-footer">
+        <a href="#" id="updateLink" title="Acesso do Administrador">Atualizar Base de Dados</a>
+        <p id="copyrightInfo">&copy; 2025. T. Design by M&#x304;D&#x304;.</p>
+    </div>
+    <div id="toastContainer"></div>
 
     <div id="modalOverlay" class="hidden"></div>
 
@@ -635,21 +663,12 @@
          * Carrega e PROCESSA o arquivo JSON da base de dados NCM.
          */
         function loadData() {
-            // ==========================================================
-            // NOVO CÓDIGO: Cache Buster
-            // ==========================================================
-            // Pega a data e hora atual (ex: 2025102809)
             const now = new Date();
             const cacheBuster = `${now.getFullYear()}${now.getMonth()}${now.getDate()}${now.getHours()}`;
-            
-            // Adiciona o "cacheBuster" ao final do nome do arquivo
-            // Ex: "base-ncm.json?v=2025102809"
-            // Isso "engana" o navegador, forçando-o a baixar o arquivo novo a cada hora.
             const fileToFetch = `${JSON_FILE}?v=${cacheBuster}`;
-            // ==========================================================
 
 
-            fetch(fileToFetch) // << MODIFICADO AQUI
+            fetch(fileToFetch) 
                 .then(response => {
                     if (!response.ok) {
                         throw new Error(`Erro HTTP! Status: ${response.status}. Não foi possível encontrar o arquivo ${JSON_FILE}.`);
