@@ -30,25 +30,33 @@
             padding: 0;
         }
 
-        html, body {
-            height: 100%;
+        /* Removido height: 100% */
+        html {
+            -webkit-text-size-adjust: 100%;
         }
 
         body {
             font-family: var(--font-family);
-            background-image: linear-gradient(120deg, #e0c3fc 0%, #8ec5fc 100%);
+            /* FUNDO MAIS ESCURO E "STICKY FOOTER" */
+            background-image: linear-gradient(120deg, #9370DB 0%, #6495ED 100%);
             background-attachment: fixed;
             color: var(--color-text);
             line-height: 1.6;
             padding: 1rem;
-            /* Padding no final para "respirar" */
-            padding-bottom: 4rem; 
+            
+            /* Lógica do Sticky Footer */
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh; 
         }
 
         .container {
             max-width: 1200px;
             margin: 0 auto;
             padding: 1rem;
+            
+            /* Lógica do Sticky Footer: faz o container crescer */
+            flex-grow: 1; 
         }
 
         h1, h2, h3 {
@@ -316,11 +324,7 @@
             display: none;
         }
 
-        /* ========================================================== */
-        /* CSS DO RODAPÉ (ESTÁTICO) */
-        /* ========================================================== */
-        
-        /* O container do rodapé. Fica alinhado com o .container */
+        /* Rodapé Estático (Sticky Footer) */
         .page-footer {
             display: flex;
             justify-content: space-between;
@@ -328,8 +332,14 @@
             flex-wrap: wrap; 
             padding: 1rem;
             max-width: 1200px; 
-            margin: 0 auto; /* Centraliza */
+            margin: 0 auto; 
             gap: 1rem; 
+            
+            /* Lógica do Sticky Footer: não encolhe */
+            flex-shrink: 0; 
+            
+            /* Garante que o rodapé ocupe a largura correta */
+            width: 100%; 
         }
         
         #updateLink {
@@ -358,7 +368,6 @@
             text-decoration-color: #f0f4f8; 
             text-decoration-thickness: 1px; 
         }
-        /* ========================================================== */
 
         #modalOverlay {
             position: fixed;
@@ -453,7 +462,7 @@
         <p id="databaseStatsInfo"></p>
 
         <div class="card">
-            <h2>1. Cole suas NCMs</h2>
+            <h2>1. Digite ou cole suas NCMs</h2>
             <textarea id="ncmInput" placeholder="Exemplos de formatos aceitos:
 8517.62.55
 84713012
@@ -510,8 +519,9 @@
 
     </div> <div class="page-footer">
         <a href="#" id="updateLink" title="Acesso do Administrador">Atualizar Base de Dados</a>
-        <p id="copyrightInfo">&copy; 2.025. Design by <span class="overline-md">MD</span>.</p>
+        <p id="copyrightInfo">&copy; 2025. Design by <span class="overline-md">MD</span>.</p>
     </div>
+
     <div id="toastContainer"></div>
 
     <div id="modalOverlay" class="hidden"></div>
