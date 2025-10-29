@@ -41,6 +41,7 @@
             color: var(--color-text);
             line-height: 1.6;
             padding: 1rem;
+            /* Padding no final para "respirar" */
             padding-bottom: 4rem; 
         }
 
@@ -315,6 +316,11 @@
             display: none;
         }
 
+        /* ========================================================== */
+        /* CSS DO RODAPÉ (ESTÁTICO) */
+        /* ========================================================== */
+        
+        /* O container do rodapé. Fica alinhado com o .container */
         .page-footer {
             display: flex;
             justify-content: space-between;
@@ -322,7 +328,7 @@
             flex-wrap: wrap; 
             padding: 1rem;
             max-width: 1200px; 
-            margin: 0 auto; 
+            margin: 0 auto; /* Centraliza */
             gap: 1rem; 
         }
         
@@ -352,6 +358,7 @@
             text-decoration-color: #f0f4f8; 
             text-decoration-thickness: 1px; 
         }
+        /* ========================================================== */
 
         #modalOverlay {
             position: fixed;
@@ -446,7 +453,7 @@
         <p id="databaseStatsInfo"></p>
 
         <div class="card">
-            <h2>1. Digite ou cole suas NCMs</h2>
+            <h2>1. Cole suas NCMs</h2>
             <textarea id="ncmInput" placeholder="Exemplos de formatos aceitos:
 8517.62.55
 84713012
@@ -501,13 +508,10 @@
             </div>
         </div>
 
-    </div> 
-    
-    <div class="page-footer">
+    </div> <div class="page-footer">
         <a href="#" id="updateLink" title="Acesso do Administrador">Atualizar Base de Dados</a>
-        <p id="copyrightInfo">&copy; 2025. Design by <span class="overline-md">MD</span>.</p>
+        <p id="copyrightInfo">&copy; 2.025. Design by <span class="overline-md">MD</span>.</p>
     </div>
-
     <div id="toastContainer"></div>
 
     <div id="modalOverlay" class="hidden"></div>
@@ -588,13 +592,7 @@
         const copyVigenteListBtn = document.getElementById('copyVigenteListBtn');
         
         const naoVigenteCopyBox = document.getElementById('naoVigenteCopyBox');
-        
-        // ==========================================================
-        // CORREÇÃO DO ERRO DE SINTAXE
-        // ==========================================================
         const naoVigenteListText = document.getElementById('naoVigenteListText');
-        // ==========================================================
-
         const copyNaoVigenteListBtn = document.getElementById('copyNaoVigenteListBtn');
 
         const toastContainer = document.getElementById('toastContainer');
@@ -988,6 +986,3 @@
     </script>
 </body>
 </html>
-
-
-
