@@ -48,11 +48,10 @@
         }
 
         .container {
-            width: 100%; /* <-- CORREÇÃO ESTÁ AQUI */
+            width: 100%; 
             max-width: 1200px;
             margin: 0 auto;
             padding: 1rem;
-            
             flex-grow: 1; 
         }
 
@@ -285,6 +284,16 @@
             margin-top: 0;
             line-height: 1.3;
         }
+        
+        /* NOVO ESTILO PARA INFO DE FIM DE VIGÊNCIA */
+        .result-item .ncm-end-info {
+            font-size: 0.8rem;
+            color: var(--color-error-dark);
+            font-weight: bold;
+            margin-top: 2px;
+            line-height: 1.3;
+        }
+        
 
         #toastContainer {
             position: fixed;
@@ -684,7 +693,7 @@
                 .then(data => {
                     
                     let updateDate = data.Data_Ultima_Atualizacao_NCM;
-                    let dateInfo = `Base de Dados: ${JSON_FILE}`; // Fallback
+                    let dateInfo = `Base de Dados: ${JSON_FILE}`; 
 
                     if (updateDate) {
                         const dateMatch = updateDate.match(/(\d{2})\/(\d{2})\/(\d{4})/);
@@ -721,7 +730,12 @@
                         throw new Error("Não foi possível encontrar uma lista (array) de NCMs dentro do arquivo JSON.");
                     }
 
+                    // ==========================================================
+                    // LÓGICA DE CARREGAMENTO ATUALIZADA
+                    // ==========================================================
                     const newDatabase = {};
+                    let vigentesCount = 0; // Novo contador
+
                     ncmArray.forEach(item => {
                         const code = item.Codigo; 
                         const desc = item.Descricao || item.descricao || item.desc || "Descrição não disponível"; 
@@ -729,7 +743,36 @@
                         if (code) {
                             const normalizedCode = code.replace(/\D/g, '');
                             if (normalizedCode.length === 8) {
-                                newDatabase[normalizedCode] = { desc: desc };
+                                
+                                // Checa por nomes de campo alternativos
+                                const dataFim = item.Data_Fim_Vigencia || item.Data_Fim;
+                                
+                                // Regra: Se a data for "31/12/9999" ou não existir, é vigente.
+                                if (!dataFim || dataFim.trim() === '31/12/9999') {
+                                    newDatabase[normalizedCode] = { 
+                                        desc: desc,
+                                        status: 'vigente'
+                                    };
+                                    vigentesCount++;
+                                } else {
+                                    // É outra data, então não é vigente.
+                                    const ato = item.Tipo_Ato_Fim || '';
+                                    const num = item.Numero_Ato_Fim || '';
+                                    const ano = item.Ano_Ato_Fim || '';
+                                    
+                                    // Monta a string do Ato, ex: "Res. Camex 440 de 2022"
+                                    let atoInfo = `${ato} ${num} de ${ano}`.replace('  ', ' ').trim();
+                                    // Remove "de" se não houver ato ou num
+                                    if (atoInfo.startsWith('de ')) atoInfo = ''; 
+                                    if (atoInfo === 'de') atoInfo = '';
+                                    
+                                    newDatabase[normalizedCode] = { 
+                                        desc: desc,
+                                        status: 'nao-vigente',
+                                        // Monta a string final, ex: "Fim: 31/03/2022 (Res. Camex 440 de 2022)"
+                                        endInfo: `Fim: ${dataFim}${atoInfo ? ` (${atoInfo})` : ''}`
+                                    };
+                                }
                             }
                         }
                     });
@@ -740,10 +783,11 @@
                         throw new Error("Base de dados carregada, mas nenhuma NCM válida foi processada.");
                     }
 
-                    const totalNcmsInDb = Object.keys(ncmDatabase).length;
+                    // Atualiza o contador de NCMs vigentes
                     if (databaseStatsInfo) {
-                        databaseStatsInfo.textContent = `Total de ${totalNcmsInDb.toLocaleString('pt-BR')} NCMs vigentes na base.`;
+                        databaseStatsInfo.textContent = `Total de ${vigentesCount.toLocaleString('pt-BR')} NCMs vigentes na base.`;
                     }
+                    // ==========================================================
 
                     showToast('Base de dados NCM carregada e processada com sucesso!', 'success');
                 })
@@ -787,19 +831,39 @@
                 return;
             }
 
+            // ==========================================================
+            // LÓGICA DE VERIFICAÇÃO ATUALIZADA
+            // ==========================================================
             const vigentes = [];
             const naoVigentes = [];
 
             uniqueNcms.forEach(ncm => {
-                if (ncmDatabase.hasOwnProperty(ncm)) {
-                    vigentes.push({
-                        code: ncm,
-                        desc: ncmDatabase[ncm].desc
-                    });
+                const ncmData = ncmDatabase[ncm];
+                
+                if (ncmData) {
+                    // NCM foi encontrada na base de dados
+                    if (ncmData.status === 'vigente') {
+                        vigentes.push({
+                            code: ncm,
+                            desc: ncmData.desc
+                        });
+                    } else { // status === 'nao-vigente'
+                        naoVigentes.push({
+                            code: ncm,
+                            desc: ncmData.desc,
+                            endInfo: ncmData.endInfo 
+                        });
+                    }
                 } else {
-                    naoVigentes.push({ code: ncm });
+                    // NCM NÃO foi encontrada na base (inválida)
+                    naoVigentes.push({
+                        code: ncm,
+                        desc: "NCM não encontrada na base de dados (Inválida).",
+                        endInfo: "" // Sem informação de vigência
+                    });
                 }
             });
+            // ==========================================================
             
             lastVigentes = vigentes;
             lastNaoVigentes = naoVigentes; 
@@ -820,6 +884,7 @@
             vigenteCount.textContent = vigentes.length;
             naoVigenteCount.textContent = naoVigentes.length;
 
+            // Popula lista de Vigentes
             if (vigentes.length > 0) {
                 let vigenteHtml = '';
                 vigentes.forEach(item => {
@@ -845,12 +910,19 @@
                 vigenteCopyBox.classList.add('hidden'); 
             }
 
+            // ==========================================================
+            // LÓGICA DE EXIBIÇÃO "NÃO VIGENTES" ATUALIZADA
+            // ==========================================================
             if (naoVigentes.length > 0) {
                 let naoVigenteHtml = '';
                 naoVigentes.forEach(item => {
                     naoVigenteHtml += `
                         <div class="result-item">
-                            <span><strong>${formatNCM(item.code)}</strong></span>
+                            <div>
+                                <span><strong>${formatNCM(item.code)}</strong></span>
+                                <div class="ncm-desc">${item.desc}</div>
+                                ${item.endInfo ? `<div class="ncm-end-info">${item.endInfo}</div>` : ''}
+                            </div>
                         </div>
                     `;
                 });
@@ -858,7 +930,10 @@
                 naoVigenteCard.classList.remove('hidden');
 
                 const sortedNaoVigentes = [...naoVigentes].sort((a, b) => a.code.localeCompare(b.code));
-                const naoVigenteString = sortedNaoVigentes.map(item => formatNCM(item.code)).join(', ');
+                // Monta a string de cópia (com a info de fim de vigência)
+                const naoVigenteString = sortedNaoVigentes.map(item => {
+                    return `${formatNCM(item.code)}${item.endInfo ? ` (${item.endInfo})` : ''}`;
+                }).join('\n'); // Usa quebra de linha para melhor leitura
                 naoVigenteListText.value = naoVigenteString;
                 naoVigenteCopyBox.classList.remove('hidden');
 
@@ -866,6 +941,7 @@
                 naoVigenteCard.classList.add('hidden');
                 naoVigenteCopyBox.classList.add('hidden'); 
             }
+            // ==========================================================
             
             statsCard.classList.remove('hidden');
         }
