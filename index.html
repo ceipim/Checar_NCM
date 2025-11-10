@@ -40,7 +40,8 @@
             background-attachment: fixed;
             color: var(--color-text);
             line-height: 1.6;
-            padding: 1rem;
+            /* PADDING SUPERIOR REDUZIDO */
+            padding: 0.5rem 1rem 4rem 1rem; 
             
             display: flex;
             flex-direction: column;
@@ -48,11 +49,10 @@
         }
 
         .container {
-            width: 100%; /* <-- CORREÇÃO ESTÁ AQUI */
-            max-width: 1200px;
+            width: 100%; 
+            max-width: 1450px; 
             margin: 0 auto;
             padding: 1rem;
-            
             flex-grow: 1; 
         }
 
@@ -65,8 +65,16 @@
             text-align: center;
             color: var(--color-bg-light);
             text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
-            font-size: 2.5rem;
-            margin-bottom: 2rem;
+            font-size: 2.2rem;
+            margin-bottom: 1rem; /* Reduzido */
+        }
+        
+        h2 {
+            font-size: 1.4rem;
+        }
+        
+        h3 {
+            font-size: 1.2rem;
         }
 
         #dataSourceInfo {
@@ -84,7 +92,7 @@
             font-style: italic;
             font-size: 0.9rem;
             margin-top: 0;
-            margin-bottom: 2rem; 
+            margin-bottom: 1rem; /* Reduzido */
             text-shadow: 1px 1px 2px rgba(0,0,0,0.2);
         }
 
@@ -96,12 +104,22 @@
             margin-bottom: 1.5rem;
             border: 1px solid var(--color-border);
         }
+        
+        .card .button-group {
+             justify-content: flex-end;
+        }
+        
+        #aba-verificador > .card:first-child .button-group,
+        #aba-comparador > .card:first-child .button-group {
+            justify-content: flex-start;
+        }
+
 
         #ncmInput {
             width: 100%;
-            height: 150px;
+            height: 120px; 
             font-family: 'Courier New', Courier, monospace;
-            font-size: 1rem;
+            font-size: 0.9rem; 
             padding: 0.75rem;
             border: 1px solid var(--color-border);
             border-radius: 8px;
@@ -116,8 +134,8 @@
         }
 
         button {
-            padding: 0.75rem 1.25rem;
-            font-size: 1rem;
+            padding: 0.7rem 1.1rem; 
+            font-size: 0.9rem; 
             font-weight: bold;
             color: var(--color-bg-light);
             background-color: var(--color-primary);
@@ -154,14 +172,138 @@
         button.danger:hover {
             background-color: #c82333;
         }
+        
+        .tabs {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 1.5rem;
+            border-bottom: 2px solid rgba(255, 255, 255, 0.2);
+            padding-bottom: 0.5rem;
+        }
+        
+        .tab-button {
+            font-size: 1rem;
+            font-weight: bold;
+            padding: 0.7rem 1.2rem;
+            border: none;
+            border-radius: 8px 8px 0 0;
+            cursor: pointer;
+            background-color: rgba(0, 0, 0, 0.1);
+            color: rgba(255, 255, 255, 0.7);
+            transition: all 0.2s ease;
+        }
+        
+        .tab-button:hover {
+            background-color: rgba(0, 0, 0, 0.2);
+            color: #fff;
+        }
+        
+        .tab-button.active {
+            background-color: var(--color-bg-light); 
+            color: var(--color-primary-dark); 
+        }
+        
+        .comparador-input-grid {
+            display: grid;
+            grid-template-columns: 1fr; 
+            gap: 1.5rem;
+        }
+        @media (min-width: 768px) {
+            .comparador-input-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+        
+        .comparador-input-grid textarea {
+            width: 100%;
+            height: 180px; 
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 0.9rem;
+            padding: 0.75rem;
+            border: 1px solid var(--color-border);
+            border-radius: 8px;
+            resize: vertical;
+        }
+        
+        .comparador-input-grid h3 {
+            border-bottom: 1px solid var(--color-border);
+            padding-bottom: 0.5rem;
+        }
+
+        .comparador-results-grid {
+            display: grid;
+            grid-template-columns: 1fr; 
+            gap: 1.5rem;
+            margin-bottom: 0.75rem; /* ESPAÇAMENTO REDUZIDO */
+        }
+        @media (min-width: 768px) {
+            .comparador-results-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+        
+        #exclusivoG1CopyBox, #exclusivoG2CopyBox {
+            margin-bottom: 0.75rem; /* ESPAÇAMENTO REDUZIDO */
+        }
+        
+
+        .summary-copy-box {
+            background: var(--color-bg-light);
+            border-radius: 12px;
+            box-shadow: 0 6px 12px var(--color-shadow);
+            padding: 1.5rem;
+            border: 1px solid var(--color-border);
+        }
+        #comumCopyBox {
+            margin-bottom: 1.5rem;
+        }
+        
+        .summary-copy-box h3 {
+            font-size: 1rem;
+            margin-bottom: 0.75rem;
+        }
+        .summary-copy-box.comum h3 { color: #49397e; }
+        .summary-copy-box.exclusivo h3 { color: #004d40; }
+        .summary-copy-box.nao-vigente h3 { color: var(--color-error-dark); }
+        
+        .summary-copy-box .input-group {
+            display: flex;
+            gap: 0.75rem;
+            align-items: center; 
+        }
+         .summary-copy-box textarea {
+            width: 100%;
+            flex-grow: 1;
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 0.9rem;
+            padding: 0.5rem;
+            border: 1px solid var(--color-border);
+            border-radius: 8px;
+            resize: vertical;
+         }
+        
+        .summary-copy-box textarea::placeholder {
+            color: #999;
+            font-style: italic;
+        }
+        
+        #compareNaoVigenteG1Text, #compareNaoVigenteG2Text {
+            height: 65px;
+        }
+        #comumListText, #exclusivoG1ListText, #exclusivoG2ListText {
+            height: 90px;
+        }
+        
+        .summary-copy-box button {
+            flex-shrink: 0;
+        }
 
 
         #statsCard {
             text-align: center;
         }
-
         #statsCard h2 {
-            margin-bottom: 1.5rem;
+            margin-bottom: 1rem; 
         }
         
         .stats-grid {
@@ -172,7 +314,7 @@
         }
 
         .stat-item {
-            padding: 1rem;
+            padding: 0.65rem; 
             border-radius: 8px;
             flex-basis: 150px;
             flex-grow: 1;
@@ -199,13 +341,13 @@
             border: 1px solid var(--color-border);
             display: flex;
             gap: 1rem;
-            align-items: center;
+            align-items: center; 
         }
 
         .copy-box textarea {
             width: 100%;
             flex-grow: 1;
-            height: 100px;
+            height: 56px; 
             font-family: 'Courier New', Courier, monospace;
             font-size: 0.9rem;
             padding: 0.5rem;
@@ -285,7 +427,7 @@
             margin-top: 0;
             line-height: 1.3;
         }
-
+        
         #toastContainer {
             position: fixed;
             bottom: 20px;
@@ -327,7 +469,7 @@
             align-items: center;
             flex-wrap: wrap; 
             padding: 1rem;
-            max-width: 1200px; 
+            max-width: 1450px; 
             margin: 0 auto; 
             gap: 1rem; 
             flex-shrink: 0; 
@@ -420,13 +562,15 @@
         }
         
         #instructionsModal p, 
-        #instructionsModal ol {
+        #instructionsModal ol,
+        #instructionsModal ul {
             margin-top: 0.5rem;
             line-height: 1.6;
             color: var(--color-text-light);
         }
         
-        #instructionsModal ol {
+        #instructionsModal ol,
+        #instructionsModal ul {
             padding-left: 2rem;
         }
         
@@ -452,64 +596,141 @@
         
         <p id="dataSourceInfo">Carregando base de dados...</p>
         <p id="databaseStatsInfo"></p>
-
-        <div class="card">
-            <h2>1. Digite ou cole suas NCMs</h2>
-            <textarea id="ncmInput" placeholder="Exemplos de formatos aceitos:
+        
+        <nav class="tabs">
+            <button id="tabBtnVerificador" class="tab-button active">Verificador</button>
+            <button id="tabBtnComparador" class="tab-button">Comparador</button>
+        </nav>
+        
+        <div id="aba-verificador" class="tab-content">
+            <div class="card">
+                <h2>1. Digite ou cole suas NCMs</h2>
+                <textarea id="ncmInput" placeholder="Exemplos de formatos aceitos:
 8517.62.55
 84713012
 8517.62.55, 8471.30.12
 (Uma ou várias NCMs por linha, separadas por vírgula, espaço ou quebra de linha)"></textarea>
-            <div class="button-group">
-                <button id="verifyBtn">Verificar NCMs</button>
-                <button id="clearBtn" class="secondary">Limpar Tudo</button>
-            </div>
-        </div>
-
-        <div class="card hidden" id="statsCard">
-            <h2>2. Resumo da Verificação</h2>
-            <div class="stats-grid">
-                <div class="stat-item">
-                    Processadas
-                    <span id="totalProcessedSpan">0</span>
-                </div>
-                <div class="stat-item">
-                    Vigentes
-                    <span id="totalVigenteSpan">0</span>
-                </div>
-                <div class="stat-item">
-                    Não Vigentes
-                    <span id="totalNaoVigenteSpan">0</span>
+                <div class="button-group" style="justify-content: flex-start;">
+                    <button id="verifyBtn">Verificar NCMs</button>
+                    <button id="clearBtn" class="secondary">Limpar Tudo</button>
                 </div>
             </div>
-           </div>
 
-        <div class="copy-box hidden" id="vigenteCopyBox">
-            <textarea id="vigenteListText" readonly title="Lista de NCMs vigentes encontradas, em ordem crescente."></textarea>
-            <button id="copyVigenteListBtn" class="success">Copiar Vigentes</button>
-        </div>
-
-        <div class="copy-box hidden" id="naoVigenteCopyBox">
-            <textarea id="naoVigenteListText" readonly title="Lista de NCMs não vigentes encontradas, em ordem crescente."></textarea>
-            <button id="copyNaoVigenteListBtn" class="danger">Copiar Não Vigentes</button>
-        </div>
-
-
-        <div class="results-container">
-            <div class="card result-card vigente hidden" id="vigenteCard">
-                <h3><span>Vigentes (<span id="vigenteCount">0</span>)</span></h3>
-                <div id="vigenteList" class="result-list">
+            <div class="card hidden" id="statsCard">
+                <h2>2. Resumo da Verificação</h2>
+                <div class="stats-grid">
+                    <div class="stat-item">
+                        Processadas
+                        <span id="totalProcessedSpan">0</span>
                     </div>
+                    <div class="stat-item">
+                        Vigentes
+                        <span id="totalVigenteSpan">0</span>
+                    </div>
+                    <div class="stat-item">
+                        Não Vigentes
+                        <span id="totalNaoVigenteSpan">0</span>
+                    </div>
+                </div>
+               </div>
+
+            <div class="copy-box hidden" id="vigenteCopyBox">
+                <textarea id="vigenteListText" readonly title="Lista de NCMs vigentes encontradas."></textarea>
+                <button id="copyVigenteListBtn" class="success">Copiar Vigentes</button>
             </div>
 
-            <div class="card result-card nao-vigente hidden" id="naoVigenteCard">
-                <h3><span>Não Vigentes (<span id="naoVigenteCount">0</span>)</span></h3>
-                <div id="naoVigenteList" class="result-list">
-                    </div>
+            <div class="copy-box hidden" id="naoVigenteCopyBox">
+                <textarea id="naoVigenteListText" readonly title="Lista de NCMs não vigentes (inválidas)."></textarea>
+                <button id="copyNaoVigenteListBtn" class="danger">Copiar Não Vigentes</button>
+            </div>
+
+
+            <div class="results-container">
+                <div class="card result-card vigente hidden" id="vigenteCard">
+                    <h3><span>Vigentes - (<span id="vigenteCount">0</span>)</span></h3>
+                    <div id="vigenteList" class="result-list">
+                        </div>
+                </div>
+
+                <div class="card result-card nao-vigente hidden" id="naoVigenteCard">
+                    <h3><span>Não Vigentes - (<span id="naoVigenteCount">0</span>)</span></h3>
+                    <div id="naoVigenteList" class="result-list">
+                        </div>
+                </div>
             </div>
         </div>
-
-    </div> <div class="page-footer">
+        
+        <div id="aba-comparador" class="tab-content hidden">
+            
+            <div class="card">
+                <h2>1. Cole suas NCMs para Comparar</h2>
+                
+                <div class="comparador-input-grid">
+                    <div>
+                        <h3>Grupo 1 <span id="g1InputCount"></span></h3>
+                        <textarea id="ncmInputGrupo1" placeholder="Cole a primeira lista de NCMs aqui..."></textarea>
+                    </div>
+                    <div>
+                        <h3>Grupo 2 <span id="g2InputCount"></span></h3>
+                        <textarea id="ncmInputGrupo2" placeholder="Cole a segunda lista de NCMs aqui..."></textarea>
+                    </div>
+                </div>
+                
+                <div class="button-group">
+                    <button id="compareBtn">Comparar NCMs</button>
+                    <button id="clearCompareBtn" class="secondary">Limpar Comparação</button>
+                </div>
+            </div>
+            
+            <div class="comparador-results-grid">
+                
+                <div>
+                    <div class="summary-copy-box exclusivo hidden" id="exclusivoG1CopyBox">
+                        <h3 id="exclusivoG1CopyTitle">NCMs vigentes contidas apenas no Grupo 1 - (0)</h3>
+                        <div class="input-group">
+                            <textarea id="exclusivoG1ListText" readonly title="NCMs apenas no G1, separadas por vírgula." placeholder="Nenhuma NCM vigente exclusiva do Grupo 1."></textarea>
+                            <button id="copyExclusivoG1Btn" class="success">Copiar</button>
+                        </div>
+                    </div>
+                    
+                    <div class="summary-copy-box nao-vigente hidden" id="compareNaoVigenteG1Box">
+                        <h3 id="naoVigenteG1CopyTitle">NCMs Não Vigentes (Grupo 1) - (0)</h3>
+                        <div class="input-group">
+                            <textarea id="compareNaoVigenteG1Text" readonly title="Lista de NCMs não vigentes ou inválidas encontradas no Grupo 1." placeholder="Nenhuma NCM não vigente para o Grupo 1."></textarea>
+                            <button id="copyCompareNaoVigenteG1Btn" class="danger">Copiar</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div>
+                    <div class="summary-copy-box exclusivo hidden" id="exclusivoG2CopyBox">
+                        <h3 id="exclusivoG2CopyTitle">NCMs vigentes contidas apenas no Grupo 2 - (0)</h3>
+                        <div class="input-group">
+                            <textarea id="exclusivoG2ListText" readonly title="NCMs apenas no G2, separadas por vírgula." placeholder="Nenhuma NCM vigente exclusiva do Grupo 2."></textarea>
+                            <button id="copyExclusivoG2Btn" class="success">Copiar</button>
+                        </div>
+                    </div>
+                    
+                    <div class="summary-copy-box nao-vigente hidden" id="compareNaoVigenteG2Box">
+                        <h3 id="naoVigenteG2CopyTitle">NCMs Não Vigentes (Grupo 2) - (0)</h3>
+                        <div class="input-group">
+                            <textarea id="compareNaoVigenteG2Text" readonly title="Lista de NCMs não vigentes ou inválidas encontradas no Grupo 2." placeholder="Nenhuma NCM não vigente para o Grupo 2."></textarea>
+                            <button id="copyCompareNaoVigenteG2Btn" class="danger">Copiar</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="summary-copy-box comum hidden" id="comumCopyBox">
+                <h3 id="comumCopyTitle">NCMs comuns aos dois Grupos - (0)</h3>
+                <div class="input-group">
+                    <textarea id="comumListText" readonly title="NCMs em comum, separadas por vírgula." placeholder="Nenhuma NCM em comum encontrada."></textarea>
+                    <button id="copyComumBtn" class="secondary">Copiar</button>
+                </div>
+            </div>
+            
+        </div>
+        </div> <div class="page-footer">
         <a href="#" id="updateLink" title="Acesso do Administrador">Atualizar Base de Dados</a>
         <p id="copyrightInfo">&copy; 2025. Design by <span class="overline-md">MD</span>.</p>
     </div>
@@ -533,25 +754,25 @@
         <h2>Instruções para Atualizar a Base NCM</h2>
         
         <h3>Passo 1: Baixar o novo JSON</h3>
-        <p>Acesse o portal oficial do governo e baixe o arquivo JSON mais recente. O link direto para a página de download é:</p>
-        <a href="https://www.gov.br/receitafederal/pt-br/assuntos/aduana-e-comercio-exterior/classificacao-fiscal-de-mercadorias/download-ncm-nomenclatura-comum-do-mercosul" target="_blank" rel="noopener noreferrer">
+        <p>Acesse o portal oficial do governo e baixe o arquivo JSON de NCMs **Vigentes** mais recente.</p>
+        <a href="https.gov.br/receitafederal/pt-br/assuntos/aduana-e-comercio-exterior/classificacao-fiscal-de-mercadorias/download-ncm-nomenclatura-comum-do-mercosul" target="_blank" rel="noopener noreferrer">
             Página de Download de NCMs (Receita Federal)
         </a>
-        <p>Procure pelo link de download do arquivo **JSON**. O arquivo baixado terá um nome com a data, como `NCM_YYYYMMDD.json`.</p>
+        <p>Procure pelo link de download do arquivo JSON **Vigente**. O arquivo baixado terá um nome com a data, como `Tabela_NCM_Vigente_YYYYMMDD.json`.</p>
 
         <h3>Passo 2: Fazer Upload no GitHub</h3>
         <p>Você deve enviar este arquivo para o repositório no GitHub, substituindo o antigo.</p>
         <ol>
             <li>Abra seu repositório no GitHub.</li>
             <li>Clique em <strong>"Add file"</strong> (Adicionar arquivo) e depois em <strong>"Upload files"</strong> (Enviar arquivos).</li>
-            <li>Arraste o arquivo JSON que você acabou de baixar (ex: `NCM_YYYYMMDD.json`) para a janela do GitHub.</li>
+            <li>Arraste o arquivo JSON que você acabou de baixar para a janela do GitHub.</li>
             <li><strong>IMPORTANTE:</strong> O GitHub mostrará o nome do arquivo. Clique no ícone de lápis (editar) ao lado do nome e **renomeie o arquivo** para exatamente:
                 <br>
                 <strong class="code-highlight" id="targetFileName">base-ncm.json</strong>
             </li>
             <li>Escreva uma mensagem de commit (ex: "Atualiza base NCM") e clique em <strong>"Commit changes"</strong> (Confirmar alterações).</li>
         </ol>
-        <p>Pronto! O GitHub irá substituir o arquivo antigo. A página irá carregar a nova base de dados automaticamente na próxima visita do usuário (ou após limpar o cache do navegador).</p>
+        <p>Pronto! A página irá carregar a nova base de dados automaticamente.</p>
         
         <div class="button-group">
             <button id="closeInstructionsBtn">Fechar</button>
@@ -569,6 +790,19 @@
         const JSON_FILE = 'base-ncm.json';
 
         // --- Seleção de Elementos DOM ---
+        
+        // --- GERAL ---
+        const toastContainer = document.getElementById('toastContainer');
+        const dataSourceInfo = document.getElementById('dataSourceInfo');
+        const databaseStatsInfo = document.getElementById('databaseStatsInfo');
+
+        // --- ABAS (TABS) ---
+        const tabBtnVerificador = document.getElementById('tabBtnVerificador');
+        const tabBtnComparador = document.getElementById('tabBtnComparador');
+        const abaVerificador = document.getElementById('aba-verificador');
+        const abaComparador = document.getElementById('aba-comparador');
+
+        // --- ABA 1: VERIFICADOR ---
         const ncmInput = document.getElementById('ncmInput');
         const verifyBtn = document.getElementById('verifyBtn');
         const clearBtn = document.getElementById('clearBtn');
@@ -577,9 +811,6 @@
         const totalProcessedSpan = document.getElementById('totalProcessedSpan');
         const totalVigenteSpan = document.getElementById('totalVigenteSpan');
         const totalNaoVigenteSpan = document.getElementById('totalNaoVigenteSpan');
-        const dataSourceInfo = document.getElementById('dataSourceInfo');
-        
-        const databaseStatsInfo = document.getElementById('databaseStatsInfo');
 
         const naoVigenteCard = document.getElementById('naoVigenteCard');
         const naoVigenteCount = document.getElementById('naoVigenteCount');
@@ -596,8 +827,43 @@
         const naoVigenteCopyBox = document.getElementById('naoVigenteCopyBox');
         const naoVigenteListText = document.getElementById('naoVigenteListText');
         const copyNaoVigenteListBtn = document.getElementById('copyNaoVigenteListBtn');
+        
+        // --- ABA 2: COMPARADOR (DOM ATUALIZADO) ---
+        const ncmInputGrupo1 = document.getElementById('ncmInputGrupo1');
+        const ncmInputGrupo2 = document.getElementById('ncmInputGrupo2');
+        const g1InputCount = document.getElementById('g1InputCount'); 
+        const g2InputCount = document.getElementById('g2InputCount'); 
+        
+        const compareBtn = document.getElementById('compareBtn');
+        const clearCompareBtn = document.getElementById('clearCompareBtn');
+        
+        // Caixas de Cópia (Resultados)
+        const comumCopyBox = document.getElementById('comumCopyBox');
+        const comumListText = document.getElementById('comumListText');
+        const copyComumBtn = document.getElementById('copyComumBtn');
+        const comumCopyTitle = document.getElementById('comumCopyTitle'); 
 
-        const toastContainer = document.getElementById('toastContainer');
+        const exclusivoG1CopyBox = document.getElementById('exclusivoG1CopyBox');
+        const exclusivoG1ListText = document.getElementById('exclusivoG1ListText');
+        const copyExclusivoG1Btn = document.getElementById('copyExclusivoG1Btn');
+        const exclusivoG1CopyTitle = document.getElementById('exclusivoG1CopyTitle'); 
+
+        const exclusivoG2CopyBox = document.getElementById('exclusivoG2CopyBox');
+        const exclusivoG2ListText = document.getElementById('exclusivoG2ListText');
+        const copyExclusivoG2Btn = document.getElementById('copyExclusivoG2Btn');
+        const exclusivoG2CopyTitle = document.getElementById('exclusivoG2CopyTitle'); 
+
+        // Caixas de Cópia (Não Vigentes)
+        const compareNaoVigenteG1Box = document.getElementById('compareNaoVigenteG1Box');
+        const compareNaoVigenteG1Text = document.getElementById('compareNaoVigenteG1Text');
+        const copyCompareNaoVigenteG1Btn = document.getElementById('copyCompareNaoVigenteG1Btn');
+        const naoVigenteG1CopyTitle = document.getElementById('naoVigenteG1CopyTitle'); 
+        
+        const compareNaoVigenteG2Box = document.getElementById('compareNaoVigenteG2Box');
+        const compareNaoVigenteG2Text = document.getElementById('compareNaoVigenteG2Text');
+        const copyCompareNaoVigenteG2Btn = document.getElementById('copyCompareNaoVigenteG2Btn');
+        const naoVigenteG2CopyTitle = document.getElementById('naoVigenteG2CopyTitle'); 
+
 
         // --- Lógica de Atualização (Modais) ---
         const updateLink = document.getElementById('updateLink');
@@ -609,8 +875,8 @@
         const passwordError = document.getElementById('passwordError');
         const instructionsModal = document.getElementById('instructionsModal');
         const closeInstructionsBtn = document.getElementById('closeInstructionsBtn');
-        const targetFileName = document.getElementById('targetFileName');
         
+        const targetFileName = document.getElementById('targetFileName');
         if (targetFileName) {
             targetFileName.textContent = JSON_FILE;
         }
@@ -658,11 +924,41 @@
 
         // --- Event Listeners Principais ---
         document.addEventListener('DOMContentLoaded', loadData);
+        
+        // --- LÓGICA DAS ABAS ---
+        tabBtnVerificador.addEventListener('click', () => switchTab('verificador'));
+        tabBtnComparador.addEventListener('click', () => switchTab('comparador'));
+
+        function switchTab(tabName) {
+            if (tabName === 'verificador') {
+                abaVerificador.classList.remove('hidden');
+                abaComparador.classList.add('hidden');
+                tabBtnVerificador.classList.add('active');
+                tabBtnComparador.classList.remove('active');
+            } else if (tabName === 'comparador') {
+                abaVerificador.classList.add('hidden');
+                abaComparador.classList.remove('hidden');
+                tabBtnVerificador.classList.remove('active');
+                tabBtnComparador.classList.add('active');
+            }
+        }
+        
+        // --- Listeners ABA 1: VERIFICADOR ---
         verifyBtn.addEventListener('click', verifyNCMs);
         clearBtn.addEventListener('click', clearResults);
-        
         copyVigenteListBtn.addEventListener('click', copyVigentesList);
         copyNaoVigenteListBtn.addEventListener('click', copyNaoVigentesList); 
+        
+        // --- Listeners ABA 2: COMPARADOR ---
+        compareBtn.addEventListener('click', compareNCMs);
+        clearCompareBtn.addEventListener('click', clearCompareResults);
+        
+        copyComumBtn.addEventListener('click', () => copyCompareList(comumListText, "Lista de NCMs em comum copiada!"));
+        copyExclusivoG1Btn.addEventListener('click', () => copyCompareList(exclusivoG1ListText, "Lista de NCMs (Apenas G1) copiada!"));
+        copyExclusivoG2Btn.addEventListener('click', () => copyCompareList(exclusivoG2ListText, "Lista de NCMs (Apenas G2) copiada!"));
+        
+        copyCompareNaoVigenteG1Btn.addEventListener('click', () => copyCompareList(compareNaoVigenteG1Text, "Lista de NCMs não vigentes (G1) copiada!"));
+        copyCompareNaoVigenteG2Btn.addEventListener('click', () => copyCompareList(compareNaoVigenteG2Text, "Lista de NCMs não vigentes (G2) copiada!"));
 
 
         /**
@@ -684,7 +980,7 @@
                 .then(data => {
                     
                     let updateDate = data.Data_Ultima_Atualizacao_NCM;
-                    let dateInfo = `Base de Dados: ${JSON_FILE}`; // Fallback
+                    let dateInfo = `Base de Dados: ${JSON_FILE}`; 
 
                     if (updateDate) {
                         const dateMatch = updateDate.match(/(\d{2})\/(\d{2})\/(\d{4})/);
@@ -709,12 +1005,7 @@
                     if (Array.isArray(data)) {
                         ncmArray = data;
                     } else {
-                        for (const key in data) {
-                            if (Array.isArray(data[key])) {
-                                ncmArray = data[key];
-                                break;
-                            }
-                        }
+                        ncmArray = data.Nomenclaturas || data[Object.keys(data).find(k => Array.isArray(data[k]))];
                     }
 
                     if (!ncmArray) {
@@ -729,7 +1020,9 @@
                         if (code) {
                             const normalizedCode = code.replace(/\D/g, '');
                             if (normalizedCode.length === 8) {
-                                newDatabase[normalizedCode] = { desc: desc };
+                                newDatabase[normalizedCode] = { 
+                                    desc: desc.replace(/<\/?i>|<\/?sub>|<\/?sup>/g, '') 
+                                };
                             }
                         }
                     });
@@ -748,7 +1041,7 @@
                     showToast('Base de dados NCM carregada e processada com sucesso!', 'success');
                 })
                 .catch(error => {
-                    console.error('Erro ao carregar ou processar o arquivo JSON:', error);
+                    console.error('Erro ao carregar o arquivo JSON:', error);
                     dataSourceInfo.textContent = `Erro ao carregar ${JSON_FILE}. Verifique o console (F12).`;
                     
                     if(databaseStatsInfo) {
@@ -761,7 +1054,7 @@
 
 
         /**
-         * Função principal que processa a verificação.
+         * Função principal que processa a verificação. (ABA 1)
          */
         function verifyNCMs() {
             const text = ncmInput.value;
@@ -791,13 +1084,18 @@
             const naoVigentes = [];
 
             uniqueNcms.forEach(ncm => {
-                if (ncmDatabase.hasOwnProperty(ncm)) {
+                const ncmData = ncmDatabase[ncm];
+                
+                if (ncmData) {
                     vigentes.push({
                         code: ncm,
-                        desc: ncmDatabase[ncm].desc
+                        desc: ncmData.desc
                     });
                 } else {
-                    naoVigentes.push({ code: ncm });
+                    naoVigentes.push({
+                        code: ncm,
+                        desc: "NCM não vigente ou inválida." 
+                    });
                 }
             });
             
@@ -808,7 +1106,7 @@
         }
 
         /**
-         * Exibe os resultados nas seções corretas.
+         * Exibe os resultados nas seções corretas. (ABA 1)
          */
         function displayResults(vigentes, naoVigentes, total) {
             vigenteList.innerHTML = '';
@@ -822,7 +1120,7 @@
 
             if (vigentes.length > 0) {
                 let vigenteHtml = '';
-                vigentes.forEach(item => {
+                [...vigentes].sort((a, b) => a.code.localeCompare(b.code)).forEach(item => {
                     vigenteHtml += `
                         <div class="result-item">
                             <div>
@@ -835,8 +1133,9 @@
                 vigenteList.innerHTML = vigenteHtml;
                 vigenteCard.classList.remove('hidden');
 
-                const sortedVigentes = [...vigentes].sort((a, b) => a.code.localeCompare(b.code));
-                const vigenteString = sortedVigentes.map(item => formatNCM(item.code)).join(', ');
+                const vigenteString = [...vigentes].sort((a, b) => a.code.localeCompare(b.code))
+                                                   .map(item => formatNCM(item.code))
+                                                   .join(', '); 
                 vigenteListText.value = vigenteString;
                 vigenteCopyBox.classList.remove('hidden');
 
@@ -847,18 +1146,21 @@
 
             if (naoVigentes.length > 0) {
                 let naoVigenteHtml = '';
-                naoVigentes.forEach(item => {
+                [...naoVigentes].sort((a, b) => a.code.localeCompare(b.code)).forEach(item => {
                     naoVigenteHtml += `
                         <div class="result-item">
-                            <span><strong>${formatNCM(item.code)}</strong></span>
+                            <div>
+                                <span><strong>${formatNCM(item.code)}</strong></span>
+                                <div class="ncm-desc">${item.desc}</div>
+                            </div>
                         </div>
                     `;
                 });
                 naoVigenteList.innerHTML = naoVigenteHtml;
                 naoVigenteCard.classList.remove('hidden');
 
-                const sortedNaoVigentes = [...naoVigentes].sort((a, b) => a.code.localeCompare(b.code));
-                const naoVigenteString = sortedNaoVigentes.map(item => formatNCM(item.code)).join(', ');
+                const naoVigenteString = [...naoVigentes].sort((a, b) => a.code.localeCompare(b.code))
+                    .map(item => formatNCM(item.code)).join(', ');
                 naoVigenteListText.value = naoVigenteString;
                 naoVigenteCopyBox.classList.remove('hidden');
 
@@ -871,7 +1173,7 @@
         }
 
         /**
-         * Limpa todas as entradas e resultados.
+         * Limpa todas as entradas e resultados. (ABA 1)
          */
         function clearResults() {
             ncmInput.value = '';
@@ -915,8 +1217,226 @@
                 showToast("Não há NCMs não vigentes para copiar.", "warn");
             }
         }
+        
+        // ==========================================================
+        // NOVAS FUNÇÕES: ABA 2 (COMPARADOR)
+        // ==========================================================
+        
+        /**
+         * Função principal que processa a comparação. (ABA 2)
+         */
+        function compareNCMs() {
+            if (Object.keys(ncmDatabase).length === 0) {
+                showToast("A base de dados NCM não foi carregada. Verifique o erro de carregamento.", "error");
+                return;
+            }
+            
+            const textoG1 = ncmInputGrupo1.value;
+            const textoG2 = ncmInputGrupo2.value;
+            
+            if (!textoG1.trim() || !textoG2.trim()) {
+                showToast("Por favor, preencha os dois grupos para comparar.", "warn");
+                return;
+            }
 
-        // --- Funções Utilitárias ---
+            const setG1 = extractNcms(textoG1);
+            const setG2 = extractNcms(textoG2);
+            
+            if (setG1.size === 0 || setG2.size === 0) {
+                 showToast("Nenhum NCM válido encontrado em um dos grupos.", "warn");
+                return;
+            }
+            
+            g1InputCount.textContent = `- (${setG1.size} NCMs)`;
+            g2InputCount.textContent = `- (${setG2.size} NCMs)`;
+
+            const comum = [];
+            const exclusivoG1Vigente = [];
+            const exclusivoG2Vigente = [];
+            
+            const naoVigentesG1 = [];
+            const naoVigentesG2 = [];
+
+            // 1. Processa NCMs em G1
+            setG1.forEach(ncm => {
+                const isVigente = ncmDatabase.hasOwnProperty(ncm);
+                if (!isVigente) {
+                    naoVigentesG1.push(ncm);
+                }
+                
+                if (setG2.has(ncm)) {
+                    comum.push(ncm); 
+                } else {
+                    if (isVigente) {
+                        exclusivoG1Vigente.push(ncm); 
+                    }
+                }
+            });
+
+            // 2. Processa NCMs em G2
+            setG2.forEach(ncm => {
+                const isVigente = ncmDatabase.hasOwnProperty(ncm);
+                if (!isVigente) {
+                    naoVigentesG2.push(ncm);
+                }
+                
+                if (!setG1.has(ncm)) {
+                    if (isVigente) {
+                        exclusivoG2Vigente.push(ncm); 
+                    }
+                }
+            });
+            
+            // 3. Exibe os resultados
+            displayCompareResults(comum, exclusivoG1Vigente, exclusivoG2Vigente, naoVigentesG1, naoVigentesG2);
+            
+            showToast("Comparação concluída!", "success");
+        }
+        
+        /**
+         * Limpa todas as entradas e resultados. (ABA 2)
+         */
+        function clearCompareResults() {
+            ncmInputGrupo1.value = '';
+            ncmInputGrupo2.value = '';
+            g1InputCount.textContent = ''; 
+            g2InputCount.textContent = ''; 
+            
+            // Limpa caixas de cópia
+            comumListText.value = '';
+            exclusivoG1ListText.value = '';
+            exclusivoG2ListText.value = '';
+            compareNaoVigenteG1Text.value = '';
+            compareNaoVigenteG2Text.value = '';
+            
+            // Limpa placeholders
+            comumListText.placeholder = '';
+            exclusivoG1ListText.placeholder = '';
+            exclusivoG2ListText.placeholder = '';
+            compareNaoVigenteG1Text.placeholder = '';
+            compareNaoVigenteG2Text.placeholder = '';
+            
+            // Reseta títulos das caixas de cópia
+            exclusivoG1CopyTitle.textContent = getPluralText(0, "NCM vigente contida apenas no Grupo 1", "NCMs vigentes contidas apenas no Grupo 1");
+            exclusivoG2CopyTitle.textContent = getPluralText(0, "NCM vigente contida apenas no Grupo 2", "NCMs vigentes contidas apenas no Grupo 2");
+            comumCopyTitle.textContent = getPluralText(0, "NCM comum aos dois Grupos", "NCMs comuns aos dois Grupos");
+            naoVigenteG1CopyTitle.textContent = getPluralText(0, "NCM Não Vigente (Grupo 1)", "NCMs Não Vigentes (Grupo 1)");
+            naoVigenteG2CopyTitle.textContent = getPluralText(0, "NCM Não Vigente (Grupo 2)", "NCMs Não Vigentes (Grupo 2)");
+            
+            // Esconde todas as caixas de resultado
+            comumCopyBox.classList.add('hidden');
+            exclusivoG1CopyBox.classList.add('hidden');
+            exclusivoG2CopyBox.classList.add('hidden');
+            compareNaoVigenteG1Box.classList.add('hidden');
+            compareNaoVigenteG2Box.classList.add('hidden');
+            
+            showToast("Campos de comparação limpos!", "info");
+        }
+        
+        /**
+         * Pega um texto e retorna um Set de NCMs
+         */
+        function extractNcms(text) {
+             const cleanedText = text.replace(/[^0-9\n\r,; ]/g, '');
+            const potentialNcms = cleanedText.split(/[\n\r,; ]+/);
+            const uniqueNcms = new Set(potentialNcms
+                .map(ncm => ncm.replace(/\D/g, ''))
+                .filter(ncm => ncm.length === 8));
+            return uniqueNcms;
+        }
+        
+        /**
+         * Exibe os resultados da comparação (ABA 2)
+         */
+        function displayCompareResults(comum, g1, g2, naoVigentesG1, naoVigentesG2) {
+            
+            // Função helper para criar o texto LIMPO (para cópia)
+            const formatCompareText = (item) => formatNCM(item);
+            
+            // Ordena as listas
+            comum.sort();
+            g1.sort();
+            g2.sort();
+            naoVigentesG1.sort();
+            naoVigentesG2.sort();
+
+            // Popula Em Comum
+            comumCopyTitle.textContent = getPluralText(comum.length, "NCM comum aos dois Grupos", "NCMs comuns aos dois Grupos");
+            comumCopyBox.classList.remove('hidden'); 
+            if (comum.length > 0) {
+                comumListText.value = comum.map(formatCompareText).join(', '); 
+                comumListText.placeholder = '';
+            } else {
+                comumListText.value = '';
+                comumListText.placeholder = 'Nenhuma NCM em comum encontrada.';
+            }
+
+            // Popula Apenas no Grupo 1
+            exclusivoG1CopyTitle.textContent = getPluralText(g1.length, "NCM vigente contida apenas no Grupo 1", "NCMs vigentes contidas apenas no Grupo 1");
+            exclusivoG1CopyBox.classList.remove('hidden'); 
+            if (g1.length > 0) {
+                exclusivoG1ListText.value = g1.map(formatCompareText).join(', ');
+                exclusivoG1ListText.placeholder = '';
+            } else {
+                exclusivoG1ListText.value = '';
+                exclusivoG1ListText.placeholder = 'Nenhuma NCM vigente exclusiva do Grupo 1.';
+            }
+
+            // Popula Apenas no Grupo 2
+            exclusivoG2CopyTitle.textContent = getPluralText(g2.length, "NCM vigente contida apenas no Grupo 2", "NCMs vigentes contidas apenas no Grupo 2");
+            exclusivoG2CopyBox.classList.remove('hidden'); 
+            if (g2.length > 0) {
+                exclusivoG2ListText.value = g2.map(formatCompareText).join(', ');
+                exclusivoG2ListText.placeholder = '';
+            } else {
+                exclusivoG2ListText.value = '';
+                exclusivoG2ListText.placeholder = 'Nenhuma NCM vigente exclusiva do Grupo 2.';
+            }
+            
+            // Popula Não Vigentes G1
+            naoVigenteG1CopyTitle.textContent = getPluralText(naoVigentesG1.length, "NCM Não Vigente (Grupo 1)", "NCMs Não Vigentes (Grupo 1)");
+            compareNaoVigenteG1Box.classList.remove('hidden'); 
+            if (naoVigentesG1.length > 0) {
+                compareNaoVigenteG1Text.value = naoVigentesG1.map(formatNCM).join(', ');
+                compareNaoVigenteG1Text.placeholder = '';
+            } else {
+                compareNaoVigenteG1Text.value = '';
+                compareNaoVigenteG1Text.placeholder = 'Nenhuma NCM não vigente para o Grupo 1.';
+            }
+
+            // Popula Não Vigentes G2
+            naoVigenteG2CopyTitle.textContent = getPluralText(naoVigentesG2.length, "NCM Não Vigente (Grupo 2)", "NCMs Não Vigentes (Grupo 2)");
+            compareNaoVigenteG2Box.classList.remove('hidden'); 
+            if (naoVigentesG2.length > 0) {
+                compareNaoVigenteG2Text.value = naoVigentesG2.map(formatNCM).join(', ');
+                compareNaoVigenteG2Text.placeholder = '';
+            } else {
+                compareNaoVigenteG2Text.value = '';
+                compareNaoVigenteG2Text.placeholder = 'Nenhuma NCM não vigente para o Grupo 2.';
+            }
+        }
+        
+        /**
+         * Retorna o texto correto para singular/plural com contagem
+         */
+        function getPluralText(count, singularText, pluralText) {
+            const text = count === 1 ? singularText : pluralText;
+            return `${text} - (${count})`;
+        }
+        
+        // Função de cópia genérica para as textareas do comparador
+        function copyCompareList(textareaElement, successMessage) {
+            const textToCopy = textareaElement.value;
+            if (textToCopy) {
+                copyToClipboard(textToCopy, successMessage);
+            } else {
+                showToast("Não há NCMs para copiar.", "warn");
+            }
+        }
+        
+        // ==========================================================
+        // FUNÇÕES UTILITÁRIAS (COMPARTILHADAS)
+        // ==========================================================
 
         function formatNCM(ncm) {
             if (ncm.length !== 8) return ncm;
