@@ -787,28 +787,29 @@
     </div>
 
     <div id="instructionsModal" class="card modal large-modal hidden">
-        <h2>Instruções para Atualizar a Base NCM</h2>
+        <h2>Instruções para Atualizar a Base NCMs</h2>
         
         <h3>Passo 1: Baixar o novo arquivo</h3>
-        <p>Acesse o portal oficial do governo e baixe o arquivo de NCMs **Vigentes** mais recente (geralmente em formato .xlsx).</p>
+        <p>Acesse o portal oficial do governo e baixe o arquivo de NCMs Vigentes mais recente (geralmente em formato .xlsx).</p>
         <a href="https://portalunico.siscomex.gov.br/classif/#/nomenclatura/tabela?perfil=publico" rel="noopener noreferrer">
             Página de Download de NCMs (Receita Federal)
         </a>
-        <p>Selecione as opções **Tabela Vigente** e **Tabela XLSX padrão**.</p>
+        <p>Selecione as opções <strong>"Tabela Vigente"</strong> e <strong>"Tabela XLSX padrão"</strong>.</p>
 
         <h3>Passo 2: Renomear e Salvar como CSV para Fazer Upload</h3>
-        <p>Você deve abrir o arquivo e salvar esse mesmo arquivo no formato CSV UTF-8 e renomeá-lo para "Tabela_NCM_Vigente" antes de enviá-lo para o repositório.</p>
+        <p>Você deve abrir o arquivo baixado e salvar esse mesmo arquivo no formato <strong>CSV UTF-8</strong>strong>, e renomeá-lo para <strong>"Tabela_NCM_Vigente.csv"</strong> antes de enviá-lo para o repositório.</p>
         <ol>
-            <li>No Excel (ou similar), clique em "Salvar Como".</li>
+            
+            <li>Com o arquivo aberto no Excel, clique em "Salvar Como".</li>
             <li>Em "Tipo de arquivo", escolha: <strong>CSV UTF-8 (Separado por vírgulas) (*.csv)</strong>.</li>
             <li>No nome do arquivo, digite **exatamente**:
                 <br>
                 <strong class="code-highlight" id="targetFileName">Tabela_NCM_Vigente.csv</strong>
             </li>
-            <li>LEMBRETE: Salve o arquivo com codificação <strong>UTF-8</strong> (se a opção estiver disponível).</li>
+            <li>ATENÇÃO: Salve o arquivo com codificação <strong>UTF-8</strong>.</li>
             <li>Abra seu repositório no GitHub e faça o login.</li>
             <li>Clique em <strong>"Add file"</strong> > <strong>"Upload files"</strong>.</li>
-            <li>Arraste o arquivo `Tabela_NCM_Vigente.csv` que você acabou de salvar.</li>
+            <li>Arraste o arquivo `Tabela_NCM_Vigente.csv` que você acabou de criar.</li>
             <li>Confirme o envio (Commit changes) para substituir o arquivo antigo.</li>
         </ol>
         <p>Pronto! A página irá carregar a nova base de dados automaticamente.</p>
@@ -1663,4 +1664,5 @@
 </body>
 
 </html>
+
 
