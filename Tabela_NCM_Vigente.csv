@@ -1,5 +1,5 @@
 ﻿Tabela NCM;;;;;;
-(Vigente em 07/09/2026);;;;;;
+(Vigente em 02/10/2026);;;;;;
 Última Atualização: Resolução Gecex nº 926/2026;;;;;;
 ;;;;;;
 Código;Descrição;Data Início;Data Fim;Ato Legal Início;Número;Ano
@@ -6858,7 +6858,7 @@ Código;Descrição;Data Início;Data Fim;Ato Legal Início;Número;Ano
 3913.90.20;Goma xantana;01/04/2022;31/12/9999;Res Gecex;272;2021
 3913.90.30;Dextrana;01/04/2022;31/12/9999;Res Gecex;272;2021
 3913.90.40;Proteínas endurecidas;01/04/2022;31/12/9999;Res Gecex;272;2021
-3913.90.50;Quitosan (Chitosan), seus sais ou seus derivados;01/04/2022;30/09/2026;Res Gecex;272;2021
+3913.90.50;Quitosana, seus sais ou seus derivados;01/10/2026;31/12/9999;Res Gecex;926;2026
 3913.90.60;Sulfato de condroitina;01/04/2022;31/12/9999;Res Gecex;272;2021
 3913.90.90;Outros;01/04/2022;31/12/9999;Res Gecex;272;2021
 3914.00;Permutadores de íons à base de polímeros das posições 39.01 a 39.13, em formas primárias.;01/04/2022;31/12/9999;Res Gecex;272;2021
@@ -13228,6 +13228,7 @@ Código;Descrição;Data Início;Data Fim;Ato Legal Início;Número;Ano
 85.18;"Microfones e seus suportes; alto-falantes (altifalantes), mesmo montados nas suas caixas (colunas); fones de ouvido (auscultadores e auriculares*), mesmo combinados com um microfone, e conjuntos ou sortidos constituídos por um microfone e um ou mais alto-falantes (altifalantes); amplificadores elétricos de audiofrequência; aparelhos elétricos de amplificação de som.";01/04/2022;31/12/9999;Res Gecex;272;2021
 8518.10;- Microfones e seus suportes;01/04/2022;31/12/9999;Res Gecex;272;2021
 8518.10.10;Piezelétricos próprios para aparelhos telefônicos;01/04/2022;31/12/9999;Res Gecex;272;2021
+8518.10.20;Outros microfones, sem suporte;01/10/2026;31/12/9999;Res Gecex;926;2026
 8518.10.90;Outros;01/04/2022;31/12/9999;Res Gecex;272;2021
 8518.2;- Alto-falantes (altifalantes), mesmo montados nas suas caixas (colunas):;01/04/2022;31/12/9999;Res Gecex;272;2021
 8518.21.00;-- Alto-falante (altifalante) único montado na sua caixa (coluna);01/04/2022;31/12/9999;Res Gecex;272;2021
